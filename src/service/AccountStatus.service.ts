@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { AccountStatusRepository } from '../repository/AccountStatus.repository';
 import { IMessage } from '../interface/Message.interface';
-import { IAccountStatusInterface } from '../interface/AccountStatus.interface';
+import {
+  IAccountStatusWithStatusCode,
+  IAccountStatus,
+} from '../interface/AccountStatus.interface';
 import { AccountStatusDto } from '../dto/AccountStatus.dto';
 
 @Injectable()
 export class AccountStatusService {
   constructor(private readonly repository: AccountStatusRepository) {}
 
-  createStatus(body: IAccountStatusInterface): Promise<IMessage> {
+  createAccountStatus(body: IAccountStatus): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
         AccountStatusDto.parse(body);
 
         this.repository
-          .createStatus(body)
+          .createAccountStatus(body)
           .then((result) => {
             resolve(result);
           })
@@ -30,6 +33,54 @@ export class AccountStatusService {
           message: 'Erro de validação: ' + JSON.parse(error.message)[0].message,
         });
       }
+    });
+  }
+
+  getAllAccountStatus(): Promise<IAccountStatusWithStatusCode> {
+    return new Promise((resolve, reject) => {
+      this.repository
+        .getAllAccountStatus()
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((error) => {
+          reject({
+            status: 500,
+            message: error.message,
+          });
+        });
+    });
+  }
+
+  alterAccountStatus(code: number, body: IAccountStatus): Promise<IMessage> {
+    return new Promise((resolve, reject) => {
+      this.repository
+        .alterAccountStatus(code, body)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((error) => {
+          reject({
+            status: 500,
+            message: error.message,
+          });
+        });
+    });
+  }
+
+  deleteAccountStatus(code: number): Promise<IMessage> {
+    return new Promise((resolve, reject) => {
+      this.repository
+        .deleteAccountStatus(code)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((error) => {
+          reject({
+            status: 500,
+            message: error.message,
+          });
+        });
     });
   }
 }
