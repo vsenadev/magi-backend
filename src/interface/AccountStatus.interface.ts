@@ -1,9 +1,10 @@
-export interface IAccountStatusInterface {
+export interface IAccountStatus {
   _id?: string;
-  code: number;
+  code?: number;
   description: string;
 }
 
-export interface IMessage {
-  message: string;
+export interface IAccountStatusWithStatusCode {
+  status: number;
+  AccountStatus: IAccountStatus[];
 }
