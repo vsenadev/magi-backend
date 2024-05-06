@@ -25,7 +25,7 @@
 ## Descrição
 
 MAGI: MONITORAMENTO DE ATIVOS POR GEOLOCALIZAÇÃO
-Sistema de monitoramento e liberação de carga baseado em geolocalização
+Sistema de monitoramento e liberação de carga baseado em geolocalização<br>
 <img src="./assets/imgs/logoMagi.png" alt="Logo do projeto" width="60%" height="50%">
 
 
