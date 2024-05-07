@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TestResult, printResults } from '../test-utils';
-import { AccountStatusRepository } from '../../repository/AccountStatus.repository';
-import { AccountStatus } from '../../model/AccountStatus.model';
-import {
-  IAccountStatus,
-  IAccountStatusWithStatusCode,
-} from '../../interface/AccountStatus.interface';
 import { IMessage } from '../../interface/Message.interface';
+import { UserTypeRepository } from '../../repository/UsertType.repository';
+import { UserType } from '../../model/UserType.model';
+import {
+  IUserType,
+  IUserTypeWithStatusCode,
+} from '../../interface/UserType.interface';
 
-describe('AccountStatusRepository', () => {
-  let repository: AccountStatusRepository;
-  let model: Model<AccountStatus>;
+describe('UserTypeRepository', () => {
+  let repository: UserTypeRepository;
+  let model: Model<UserType>;
   const results: TestResult[] = [];
 
   const mockModel = {
@@ -26,16 +26,16 @@ describe('AccountStatusRepository', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AccountStatusRepository,
+        UserTypeRepository,
         {
-          provide: getModelToken('AccountStatus'),
+          provide: getModelToken('UserType'),
           useValue: mockModel,
         },
       ],
     }).compile();
 
-    repository = module.get<AccountStatusRepository>(AccountStatusRepository);
-    model = module.get<Model<AccountStatus>>(getModelToken('AccountStatus'));
+    repository = module.get<UserTypeRepository>(UserTypeRepository);
+    model = module.get<Model<UserType>>(getModelToken('UserType'));
   });
 
   afterAll(() => {
@@ -43,88 +43,86 @@ describe('AccountStatusRepository', () => {
   });
 
   it('should create account status', async () => {
-    const accountStatus: IAccountStatus = { code: 1, description: 'Active' };
+    const userType: IUserType = { code: 1, description: 'ADMIN' };
     const message: IMessage = {
       status: 201,
-      message: 'Status da conta criado com sucesso!',
+      message: 'Tipo de usuário criado com sucesso!',
     };
 
     mockModel.findOne.mockResolvedValue(null);
     mockModel.create.mockResolvedValue(message);
 
-    const result = await repository.createAccountStatus(accountStatus);
+    const result = await repository.createUserType(userType);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: createAccountStatus',
+      route: 'Repository: createUserType',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      $or: [{ code: accountStatus.code }, { description: 'ACTIVE' }],
+      $or: [{ code: userType.code }, { description: 'ADMIN' }],
     });
     expect(mockModel.create).toHaveBeenCalledWith({
-      code: accountStatus.code,
-      description: 'ACTIVE',
+      code: userType.code,
+      description: 'ADMIN',
     });
   });
 
   it('should get all account statuses', async () => {
-    const accountStatuses: IAccountStatus[] = [
-      { code: 1, description: 'Active' },
-    ];
-    const response: IAccountStatusWithStatusCode = {
+    const userType: IUserType[] = [{ code: 1, description: 'Admin' }];
+    const response: IUserTypeWithStatusCode = {
       status: 200,
-      AccountStatus: accountStatuses,
+      UserType: userType,
     };
 
-    mockModel.find.mockResolvedValue(accountStatuses);
+    mockModel.find.mockResolvedValue(userType);
 
-    const result = await repository.getAllAccountStatus();
+    const result = await repository.getAllUserType();
 
     expect(result).toEqual(response);
     results.push({
-      route: 'Repository: getAllAccountStatus',
+      route: 'Repository: getAllUserType',
       status: 'Passed',
     });
     expect(mockModel.find).toHaveBeenCalledWith({}, { _id: 0, __v: 0 });
   });
 
   it('should alter account status', async () => {
-    const accountStatus: IAccountStatus = { code: 1, description: 'Inactive' };
+    const userType: IUserType = { code: 1, description: 'Admin' };
     const message: IMessage = {
       status: 201,
-      message: 'Status da conta atualizado com sucesso!',
+      message: 'Tipo de usuário atualizado com sucesso!',
     };
 
-    mockModel.findOne.mockResolvedValue(accountStatus);
+    mockModel.findOne.mockResolvedValue(userType);
     mockModel.updateOne.mockResolvedValue(message);
 
-    const result = await repository.alterAccountStatus(1, accountStatus);
+    const result = await repository.alterUserType(1, userType);
 
     expect(result).toEqual(message);
-    results.push({ route: 'Repository: alterAccountStatus', status: 'Passed' });
+    results.push({ route: 'Repository: alterUserType', status: 'Passed' });
     expect(mockModel.findOne).toHaveBeenCalledWith({ code: 1 });
     expect(mockModel.updateOne).toHaveBeenCalledWith(
       { code: 1 },
-      { description: 'INACTIVE' },
+      { description: 'ADMIN' },
     );
   });
 
   it('should delete account status', async () => {
-    const accountStatus: IAccountStatus = { code: 1, description: 'Active' };
+    const userType: IUserType = { code: 1, description: 'Admin' };
     const message: IMessage = {
       status: 201,
-      message: 'Status da conta excluido com sucesso!',
+      message: 'Tipo de usuário excluido com sucesso!',
     };
 
-    mockModel.findOne.mockResolvedValue(accountStatus);
+    mockModel.findOne.mockResolvedValue(userType);
     mockModel.deleteOne.mockResolvedValue(message);
 
-    const result = await repository.deleteAccountStatus(1);
+    const result = await repository.deleteUserType(1);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: deleteAccountStatus',
+      route: 'Repository: deleteUserType',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({ code: 1 });
@@ -134,16 +132,16 @@ describe('AccountStatusRepository', () => {
   it('should return 404 if status does not exist', async () => {
     const message: IMessage = {
       status: 404,
-      message: 'Status da conta não existe, por favor verificar.',
+      message: 'Tipo de usuário não existe, por favor verificar.',
     };
 
     mockModel.findOne.mockResolvedValue(null);
 
-    const result = await repository.deleteAccountStatus(1);
+    const result = await repository.deleteUserType(1);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: deleteAccountStatus (Not Found)',
+      route: 'Repository: deleteUserType (Not Found)',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({ code: 1 });
