@@ -1,4 +1,3 @@
-// src/account-status/account-status.controller.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestResult, printResults } from '../test-utils';
 import { AccountStatusService } from '../../service/AccountStatus.service';

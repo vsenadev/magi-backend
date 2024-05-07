@@ -1,37 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AccountStatus } from '../model/AccountStatus.model';
-import { AccountStatusModelName } from '../schema/AccountStatus.schema';
 import { IMessage } from '../interface/Message.interface';
+import { UserTypeModelName } from '../schema/UserType.schema';
+import { UserType } from '../model/UserType.model';
 import {
-  IAccountStatusWithStatusCode,
-  IAccountStatus,
-} from '../interface/AccountStatus.interface';
+  IUserType,
+  IUserTypeWithStatusCode,
+} from '../interface/UserType.interface';
 
 @Injectable()
-export class AccountStatusRepository {
+export class UserTypeRepository {
   constructor(
-    @InjectModel(AccountStatusModelName)
-    private readonly accountStatusModel: Model<AccountStatus>,
+    @InjectModel(UserTypeModelName)
+    private readonly userTypeModel: Model<UserType>,
   ) {}
 
-  createAccountStatus(body: IAccountStatus): Promise<IMessage> {
-    return this.accountStatusModel
+  createUserType(body: IUserType): Promise<IMessage> {
+    return this.userTypeModel
       .findOne({
         $or: [
           { code: body.code },
           { description: body.description.toUpperCase() },
         ],
       })
-      .then((existingStatus) => {
-        if (existingStatus) {
+      .then((existingType) => {
+        if (existingType) {
           return {
             status: 409,
-            message: 'Status da conta já existe, por favor verificar.',
+            message: 'Tipo de usuário já existe, por favor verificar.',
           };
         } else {
-          return this.accountStatusModel
+          return this.userTypeModel
             .create({
               code: body.code,
               description: body.description.toUpperCase(),
@@ -39,7 +39,7 @@ export class AccountStatusRepository {
             .then((): IMessage => {
               return {
                 status: 201,
-                message: 'Status da conta criado com sucesso!',
+                message: 'Tipo de usuário criado com sucesso!',
               };
             });
         }
@@ -49,28 +49,28 @@ export class AccountStatusRepository {
       });
   }
 
-  getAllAccountStatus(): Promise<IAccountStatusWithStatusCode> {
-    return this.accountStatusModel
+  getAllUserType(): Promise<IUserTypeWithStatusCode> {
+    return this.userTypeModel
       .find({}, { _id: 0, __v: 0 })
-      .then((accountsStatus: IAccountStatus[]) => {
+      .then((userType: IUserType[]) => {
         return {
           status: 200,
-          AccountStatus: accountsStatus,
+          UserType: userType,
         };
       });
   }
 
-  alterAccountStatus(code: number, body: IAccountStatus): Promise<IMessage> {
-    return this.accountStatusModel
+  alterUserType(code: number, body: IUserType): Promise<IMessage> {
+    return this.userTypeModel
       .findOne({ code: code })
-      .then((existingStatus) => {
-        if (!existingStatus) {
+      .then((existingType) => {
+        if (!existingType) {
           return {
             status: 404,
-            message: 'Status da conta não existe, por favor verificar.',
+            message: 'Tipo de usuário não existe, por favor verificar.',
           };
         } else {
-          return this.accountStatusModel
+          return this.userTypeModel
             .updateOne(
               {
                 code: code,
@@ -82,7 +82,7 @@ export class AccountStatusRepository {
             .then((): IMessage => {
               return {
                 status: 201,
-                message: 'Status da conta atualizado com sucesso!',
+                message: 'Tipo de usuário atualizado com sucesso!',
               };
             });
         }
@@ -92,22 +92,22 @@ export class AccountStatusRepository {
       });
   }
 
-  deleteAccountStatus(code: number): Promise<IMessage> {
-    return this.accountStatusModel
+  deleteUserType(code: number): Promise<IMessage> {
+    return this.userTypeModel
       .findOne({ code: code })
-      .then((existingStatus) => {
-        if (!existingStatus) {
+      .then((existingType) => {
+        if (!existingType) {
           return {
             status: 404,
-            message: 'Status da conta não existe, por favor verificar.',
+            message: 'Tipo de usuário não existe, por favor verificar.',
           };
         } else {
-          return this.accountStatusModel
+          return this.userTypeModel
             .deleteOne({ code: code })
             .then((): IMessage => {
               return {
                 status: 201,
-                message: 'Status da conta excluido com sucesso!',
+                message: 'Tipo de usuário excluido com sucesso!',
               };
             });
         }
