@@ -6,10 +6,11 @@ import {
   IUserTypeWithStatusCode,
 } from '../interface/UserType.interface';
 import { UserTypeDto } from '../dto/UserType.dto';
+import { errorMessage } from 'src/utils/error';
 
 @Injectable()
 export class UserTypeService {
-  constructor(private readonly repository: UserTypeRepository) {}
+  constructor(private readonly repository: UserTypeRepository) { }
 
   createUserType(body: IUserType): Promise<IMessage> {
     return new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@ export class UserTypeService {
       } catch (error) {
         resolve({
           status: 400,
-          message: 'Erro de validação: ' + JSON.parse(error.message)[0].message,
+          message: errorMessage(JSON.parse(error.message)),
         });
       }
     });
@@ -54,17 +55,25 @@ export class UserTypeService {
 
   alterUserType(code: number, body: IUserType): Promise<IMessage> {
     return new Promise((resolve, reject) => {
-      this.repository
-        .alterUserType(code, body)
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((error) => {
-          reject({
-            status: 500,
-            message: error.message,
+      try {
+        UserTypeDto.parse(body);
+        this.repository
+          .alterUserType(code, body)
+          .then((result) => {
+            resolve(result);
+          })
+          .catch((error) => {
+            reject({
+              status: 500,
+              message: errorMessage(JSON.parse(error.message)),
+            });
           });
+      } catch (error) {
+        resolve({
+          status: 400,
+          message: errorMessage(JSON.parse(error.message)),
         });
+      }
     });
   }
 
