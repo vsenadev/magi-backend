@@ -1,12 +1,15 @@
 export interface IProduct {
-    _id?: string;
-    SKU?: number;
-    name: string;
-    type: string;
-    value: number;
-    quantity: number;
-    length: number;
-    width: number;
-    height: number;
-  }
-  
+  _id?: string;
+  sku: string;
+  name: string;
+  type: string;
+  value: number;
+  length: number;
+  width: number;
+  height: number;
+}
+
+export interface IProductWithStatusCode {
+  status: number;
+  products: IProduct[];
+}

@@ -5,27 +5,23 @@ import { Product } from '../model/Product.model';
 import { ProductModelName } from '../schema/Product.schema';
 import {
   IProduct,
+  IProductWithStatusCode,
 } from '../interface/Product.interface';
+import { IMessage } from 'src/interface/Message.interface';
 
 @Injectable()
 export class ProductRepository {
   constructor(
     @InjectModel(ProductModelName)
     private readonly ProductModel: Model<Product>,
-  ) {}
+  ) { }
 
-  createProduct(body: IProduct): Promise<IProduct> {
+  createProduct(body: IProduct): Promise<IMessage> {
     return this.ProductModel
       .findOne({
         $or: [
-          { SKU: body.SKU },
+          { sku: body.sku },
           { name: body.name },
-          { type: body.type },
-          { value: body.value },
-          { quantity: body.quantity },
-          { length: body.length },
-          { width: body.width },
-          { height: body.height },
         ],
       })
       .then((existingProduct) => {
@@ -37,14 +33,13 @@ export class ProductRepository {
         } else {
           return this.ProductModel
             .create({
-                SKU: body.SKU,
-                name: body.name,
-                type: body.type,
-                value: body.value,
-                quantity: body.quantity,
-                length: body.length,
-                width: body.width,
-                height: body.height,
+              sku: body.sku,
+              name: body.name,
+              type: body.type,
+              value: body.value,
+              length: body.length,
+              width: body.width,
+              height: body.height,
             })
             .then(() => {
               return {
@@ -59,18 +54,18 @@ export class ProductRepository {
       });
   }
 
-  getAllProducts(): Promise<IProduct> {
+  getAllProducts(): Promise<IProductWithStatusCode> {
     return this.ProductModel
       .find({}, { _id: 0, __v: 0 })
-      .then((Product: IProduct[]) => {
+      .then((products: IProduct[]) => {
         return {
           status: 200,
-          Product: Product,
+          products: products,
         };
       });
   }
 
-  alterProduct(sku: number, body: IProduct): Promise<IProduct> {
+  alterProduct(sku: string, body: IProduct): Promise<IMessage> {
     return this.ProductModel
       .findOne({ sku: sku })
       .then((existingProduct) => {
@@ -83,29 +78,16 @@ export class ProductRepository {
           return this.ProductModel
             .updateOne(
               {
-                sku: sku,
-              },
+                sku: sku
+              }, 
               {
                 name: body.name,
-              },
-              {
                 type: body.type,
-              },
-              {
                 value: body.value,
-              },
-              {
-                quantity: body.quantity,
-              },
-              {
                 length: body.length,
-              },
-              {
                 width: body.width,
-              },
-              {
                 height: body.height,
-              },
+              }
             )
             .then(() => {
               return {
@@ -120,7 +102,7 @@ export class ProductRepository {
       });
   }
 
-  deleteProduct(sku: number): Promise<IProduct> {
+  deleteProduct(sku: string): Promise<IMessage> {
     return this.ProductModel
       .findOne({ sku: sku })
       .then((existingProduct) => {
