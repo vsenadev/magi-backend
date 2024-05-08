@@ -6,14 +6,6 @@ MAGI é um projeto TCC fullstack com a finalidade de desenvolver um sistema de m
 ---
 
 ## 🧠 Tecnologias utilizadas:
-<div>
-  <p>Typescript</p>
-  <p>pnpm (Package Manager)</p>
-  <p>Nestjs</p>
-  <p>MongoDB</p>
-  <p>Zod (Validation)</p>
-</div>
-
 + Typescript;
 + pnpm (Package Manager);
 + Nestjs;
