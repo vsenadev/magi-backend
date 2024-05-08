@@ -1,5 +1,5 @@
 ## 💻 Sobre
-MAGI: MONITORAMENTO DE ATIVOS POR GEOLOCALIZAÇÃO <br>
+<p style="align-self: center;">MAGI: MONITORAMENTO DE ATIVOS POR GEOLOCALIZAÇÃO</p> <br><br> 
 MAGI é um projeto TCC fullstack com a finalidade de desenvolver um sistema de monitoramento e liberação de carga baseado em geolocalização.
 
 <img src="./assets/imgs/logoMagi.png" alt="Logo do projeto" width="30%" height="30%">
