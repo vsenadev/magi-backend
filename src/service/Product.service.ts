@@ -1,24 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { IMessage } from '../interface/Message.interface';
-import { UserTypeRepository } from '../repository/UsertType.repository';
+import { ProductRepository } from '../repository/Product.repository';
 import {
-  IUserType,
-  IUserTypeWithStatusCode,
-} from '../interface/UserType.interface';
-import { UserTypeDto } from '../dto/UserType.dto';
+  IProduct,
+  IProductWithStatusCode,
+} from '../interface/Product.interface';
+import { ProductDto } from '../dto/Product.dto';
+import { IMessage } from 'src/interface/Message.interface';
+import { v4 as uuidv4 } from 'uuid';
 import { errorMessage } from '../utils/error';
 
 @Injectable()
-export class UserTypeService {
-  constructor(private readonly repository: UserTypeRepository) { }
+export class ProductService {
+  constructor(private readonly repository: ProductRepository) { }
 
-  createUserType(body: IUserType): Promise<IMessage> {
+  createProduct(body: IProduct): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
-        UserTypeDto.parse(body);
-
+        body['sku'] = uuidv4();
+        ProductDto.parse(body);
         this.repository
-          .createUserType(body)
+          .createProduct(body)
           .then((result) => {
             resolve(result);
           })
@@ -37,11 +38,11 @@ export class UserTypeService {
     });
   }
 
-  getAllUserType(): Promise<IUserTypeWithStatusCode> {
+  getAllProducts(): Promise<IProductWithStatusCode> {
     return new Promise((resolve, reject) => {
       this.repository
-        .getAllUserType()
-        .then((result: IUserTypeWithStatusCode) => {
+        .getAllProducts()
+        .then((result) => {
           resolve(result);
         })
         .catch((error) => {
@@ -53,12 +54,13 @@ export class UserTypeService {
     });
   }
 
-  alterUserType(code: number, body: IUserType): Promise<IMessage> {
+
+  alterProduct(sku: string, body: IProduct): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
-        UserTypeDto.parse(body);
+        ProductDto.parse(body);
         this.repository
-          .alterUserType(code, body)
+          .alterProduct(sku, body)
           .then((result) => {
             resolve(result);
           })
@@ -77,10 +79,10 @@ export class UserTypeService {
     });
   }
 
-  deleteUserType(code: number): Promise<IMessage> {
+  deleteProduct(sku: string): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       this.repository
-        .deleteUserType(code)
+        .deleteProduct(sku)
         .then((result) => {
           resolve(result);
         })

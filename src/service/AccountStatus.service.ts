@@ -6,16 +6,16 @@ import {
   IAccountStatus,
 } from '../interface/AccountStatus.interface';
 import { AccountStatusDto } from '../dto/AccountStatus.dto';
+import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class AccountStatusService {
-  constructor(private readonly repository: AccountStatusRepository) {}
+  constructor(private readonly repository: AccountStatusRepository) { }
 
   createAccountStatus(body: IAccountStatus): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
         AccountStatusDto.parse(body);
-
         this.repository
           .createAccountStatus(body)
           .then((result) => {
@@ -30,7 +30,7 @@ export class AccountStatusService {
       } catch (error) {
         resolve({
           status: 400,
-          message: 'Erro de validação: ' + JSON.parse(error.message)[0].message,
+          message: errorMessage(JSON.parse(error.message)),
         });
       }
     });
@@ -54,17 +54,25 @@ export class AccountStatusService {
 
   alterAccountStatus(code: number, body: IAccountStatus): Promise<IMessage> {
     return new Promise((resolve, reject) => {
-      this.repository
-        .alterAccountStatus(code, body)
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((error) => {
-          reject({
-            status: 500,
-            message: error.message,
+      try {
+        AccountStatusDto.parse(body);
+        this.repository
+          .alterAccountStatus(code, body)
+          .then((result) => {
+            resolve(result);
+          })
+          .catch((error) => {
+            reject({
+              status: 500,
+              message: errorMessage(JSON.parse(error.message)),
+            });
           });
+      } catch (error) {
+        resolve({
+          status: 400,
+          message: errorMessage(JSON.parse(error.message)),
         });
+      }
     });
   }
 
