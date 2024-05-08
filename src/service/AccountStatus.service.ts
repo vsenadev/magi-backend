@@ -6,7 +6,7 @@ import {
   IAccountStatus,
 } from '../interface/AccountStatus.interface';
 import { AccountStatusDto } from '../dto/AccountStatus.dto';
-import { errorMessage } from 'src/utils/error';
+import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class AccountStatusService {

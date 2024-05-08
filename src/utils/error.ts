@@ -1,4 +1,4 @@
-import { IError } from "src/interface/ErrorList.interface";
+import { IError } from "../interface/ErrorList.interface";
 
 export function errorMessage(errorList: IError[]): string {
     let messageReturn = [];

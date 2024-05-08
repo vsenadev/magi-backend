@@ -43,7 +43,7 @@ describe('ProductRepository', () => {
   });
 
   it('should create product', async () => {
-    const product: IProduct = { sku: '123', name: 'New Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = { sku: '12', name: 'New Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
     const message: IMessage = {
       status: 201,
       message: 'Produto criado com sucesso!',
@@ -66,7 +66,7 @@ describe('ProductRepository', () => {
   });
 
   it('should get all products', async () => {
-    const products: IProduct[] = [{ sku: '123', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 }];
+    const products: IProduct[] = [{ sku: '12', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 }];
     const response: IProductWithStatusCode = {
       status: 200,
       products: products,
@@ -85,28 +85,28 @@ describe('ProductRepository', () => {
   });
 
   it('should alter product', async () => {
-    const product: IProduct = { sku: '123', name: 'Update Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = { sku: '12', name: 'Update Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
     const message: IMessage = {
       status: 201,
       message: 'Produto atualizado com sucesso!',
     };
 
-    mockModel.findOne.mockResolvedValue({ sku: '123' });
+    mockModel.findOne.mockResolvedValue({ sku: '12' });
     mockModel.updateOne.mockResolvedValue(message);
 
-    const result = await repository.alterProduct('123', product);
+    const result = await repository.alterProduct('12', product);
 
     expect(result).toEqual(message);
     results.push({
       route: 'Repository: alterProduct',
       status: 'Passed',
     });
-    expect(mockModel.findOne).toHaveBeenCalledWith({ sku: '123' });
-    expect(mockModel.updateOne).toHaveBeenCalledWith({ sku: '123' }, product);
+    expect(mockModel.findOne).toHaveBeenCalledWith({ sku: '12' });
+    expect(mockModel.updateOne).toHaveBeenCalledWith({ sku: '12' }, product);
   });
 
   it('should delete product', async () => {
-    const product: IProduct = { sku: '123', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = { sku: '12', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
     const message: IMessage = {
       status: 201,
       message: 'Produto excluído com sucesso!',

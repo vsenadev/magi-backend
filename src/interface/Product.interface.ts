@@ -1,6 +1,6 @@
 export interface IProduct {
   _id?: string;
-  sku: string;
+  sku?: string;
   name: string;
   type: string;
   value: number;

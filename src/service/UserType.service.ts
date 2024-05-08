@@ -6,7 +6,7 @@ import {
   IUserTypeWithStatusCode,
 } from '../interface/UserType.interface';
 import { UserTypeDto } from '../dto/UserType.dto';
-import { errorMessage } from 'src/utils/error';
+import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class UserTypeService {

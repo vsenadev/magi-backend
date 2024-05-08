@@ -81,6 +81,7 @@ export class ProductRepository {
                 sku: sku
               }, 
               {
+                sku: sku,
                 name: body.name,
                 type: body.type,
                 value: body.value,
