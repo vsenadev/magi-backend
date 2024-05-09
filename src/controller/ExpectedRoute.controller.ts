@@ -22,14 +22,14 @@ export class ExpectedRouteController {
 
   @Put('/latitude/:latitude/longitude/:longitude')
   alterExpectedRoute(
-    @Param('latitude') latitude: string, @Param('longitude') longitude: string,
+    @Param('latitude') latitude: number, @Param('longitude') longitude: number,
     @Body() body: IExpectedRoute,
   ): Promise<IMessage> {
     return this.service.alterExpectedRoute(latitude, longitude, body);
   }
 
   @Delete('/latitude/:latitude/longitude/:longitude')
-  deleteExpectedRoute(@Param('latitude') latitude: string, @Param('longitude') longitude: string): Promise<IMessage> {
+  deleteExpectedRoute(@Param('latitude') latitude: number, @Param('longitude') longitude: number): Promise<IMessage> {
     return this.service.deleteExpectedRoute(latitude, longitude);
   }
 }

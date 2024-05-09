@@ -21,7 +21,7 @@ describe('TracedRouteService', () => {
     deleteTracedRoute: jest.fn(),
   };
 
-  const geolocation: ExpectedRoute = createExpectedRoute("123124", "141325");
+  const geolocation: ExpectedRoute = createExpectedRoute(55.93, -3.118);
 
 
   beforeEach(async () => {

@@ -43,7 +43,7 @@ describe('ExpectedRouteRepository', () => {
   });
 
   it('should create expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: IExpectedRoute = { latitude: 55.93, longitude: -3.118 };
     const message: IMessage = {
       status: 201,
       message: 'Rota Esperada criada com sucesso!',
@@ -60,13 +60,13 @@ describe('ExpectedRouteRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      $or: [{ latitude: '123' }, { longitude: '456' }],
+      $or: [{ latitude: 55.93 }, { longitude: -3.118 }],
     });
     expect(mockModel.create).toHaveBeenCalledWith(route);
   });
 
   it('should get all expected routes', async () => {
-    const routes: IExpectedRoute[] = [{ latitude: '123', longitude: '456' }];
+    const routes: IExpectedRoute[] = [{ latitude: 55.93, longitude: -3.118 }];
     const response: IExpectedRouteWithStatusCode = {
       status: 200,
       expectedRoutes: routes,
@@ -85,16 +85,16 @@ describe('ExpectedRouteRepository', () => {
   });
 
   it('should alter expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: IExpectedRoute = { latitude: 55.93, longitude: -3.118 };
     const message: IMessage = {
       status: 201,
       message: 'Rota Esperada atualizada com sucesso!',
     };
 
-    mockModel.findOne.mockResolvedValue({ latitude: '123', longitude: '456' });
+    mockModel.findOne.mockResolvedValue({ latitude: 55.93, longitude: -3.118 });
     mockModel.updateOne.mockResolvedValue(undefined);
 
-    const result = await repository.alterExpectedRoute('123', '456', route);
+    const result = await repository.alterExpectedRoute(55.93, -3.118, route);
 
     expect(result).toEqual(message);
     results.push({
@@ -102,17 +102,17 @@ describe('ExpectedRouteRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      latitude: 55.93,
+      longitude: -3.118,
     });
     expect(mockModel.updateOne).toHaveBeenCalledWith(
-      { latitude: '123', longitude: '456' },
+      { latitude: 55.93, longitude: -3.118 },
       route,
     );
   });
 
   it('should delete expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: IExpectedRoute = { latitude: 55.93, longitude: -3.118 };
     const message: IMessage = {
       status: 201,
       message: 'Rota Esperada excluída com sucesso!',
@@ -121,7 +121,7 @@ describe('ExpectedRouteRepository', () => {
     mockModel.findOne.mockResolvedValue(route);
     mockModel.deleteOne.mockResolvedValue(undefined);
 
-    const result = await repository.deleteExpectedRoute('123', '456');
+    const result = await repository.deleteExpectedRoute(55.93, -3.118);
 
     expect(result).toEqual(message);
     results.push({
@@ -129,12 +129,12 @@ describe('ExpectedRouteRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      latitude: 55.93,
+      longitude: -3.118,
     });
     expect(mockModel.deleteOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      latitude: 55.93,
+      longitude: -3.118,
     });
   });
 
@@ -146,7 +146,7 @@ describe('ExpectedRouteRepository', () => {
 
     mockModel.findOne.mockResolvedValue(null);
 
-    const result = await repository.deleteExpectedRoute('123', '456');
+    const result = await repository.deleteExpectedRoute(55.93, -3.118);
 
     expect(result).toEqual(message);
     results.push({
@@ -154,8 +154,8 @@ describe('ExpectedRouteRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      latitude: 55.93,
+      longitude: -3.118,
     });
   });
 });

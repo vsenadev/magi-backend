@@ -60,7 +60,7 @@ export class ExpectedRouteRepository {
             });
     }
 
-    async alterExpectedRoute(latitude: string, longitude: string, body: IExpectedRoute): Promise<IMessage> {
+    async alterExpectedRoute(latitude: number, longitude: number, body: IExpectedRoute): Promise<IMessage> {
         return this.ExpectedRouteModel
             .findOne({ latitude: latitude, longitude: longitude })
             .then((existingExpectedRoute) => {
@@ -94,7 +94,7 @@ export class ExpectedRouteRepository {
             });
     }
 
-    async deleteExpectedRoute(latitude: string, longitude: string): Promise<IMessage> {
+    async deleteExpectedRoute(latitude: number, longitude: number): Promise<IMessage> {
         return this.ExpectedRouteModel
             .findOne({ latitude: latitude, longitude: longitude })
             .then((existingExpectedRoute) => {

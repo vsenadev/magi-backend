@@ -53,7 +53,7 @@ export class ExpectedRouteService {
   }
 
 
-  alterExpectedRoute(latitude: string, longitude: string, body: IExpectedRoute): Promise<IMessage> {
+  alterExpectedRoute(latitude: number, longitude: number, body: IExpectedRoute): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
         ExpectedRouteDto.parse(body);
@@ -77,7 +77,7 @@ export class ExpectedRouteService {
     });
   }
 
-  deleteExpectedRoute(latitude: string, longitude: string): Promise<IMessage> {
+  deleteExpectedRoute(latitude: number, longitude: number): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       this.repository
         .deleteExpectedRoute(latitude, longitude)

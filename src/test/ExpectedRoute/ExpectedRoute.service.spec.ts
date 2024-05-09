@@ -40,7 +40,7 @@ describe('ExpectedRouteService', () => {
   });
 
   it('should create expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: IExpectedRoute = { latitude: 55.93, longitude: -3.118 };
     const message: IMessage = {
       status: 201,
       message: 'Expected route created successfully!',
@@ -57,7 +57,7 @@ describe('ExpectedRouteService', () => {
   it('should get all expected routes', async () => {
     const routes: IExpectedRouteWithStatusCode = {
       status: 200,
-      expectedRoutes: [{ latitude: '123', longitude: '456' }],
+      expectedRoutes: [{ latitude: 55.93, longitude: -3.118 }],
     };
 
     mockRepository.getAllExpectedRoutes.mockResolvedValue(routes);
@@ -69,7 +69,7 @@ describe('ExpectedRouteService', () => {
   });
 
   it('should alter expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: IExpectedRoute = { latitude: 55.93, longitude: -3.118 };
     const message: IMessage = {
       status: 201,
       message: 'Expected route updated successfully!',
@@ -77,7 +77,7 @@ describe('ExpectedRouteService', () => {
 
     mockRepository.alterExpectedRoute.mockResolvedValue(message);
 
-    const result = await service.alterExpectedRoute('123', '456', route);
+    const result = await service.alterExpectedRoute(55.93, -3.118, route);
 
     expect(result).toEqual(message);
     results.push({ route: 'Service: alterExpectedRoute', status: 'Passed' });
@@ -91,7 +91,7 @@ describe('ExpectedRouteService', () => {
 
     mockRepository.deleteExpectedRoute.mockResolvedValue(message);
 
-    const result = await service.deleteExpectedRoute('123', '456');
+    const result = await service.deleteExpectedRoute(55.93, -3.118);
 
     expect(result).toEqual(message);
     results.push({ route: 'Service: deleteExpectedRoute', status: 'Passed' });
