@@ -2,17 +2,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TestResult, printResults } from '../test-utils';
-import { ExpectedRouteRepository } from '../../repository/ExpectedRoute.repository';
 import {
-  IExpectedRoute,
-  IExpectedRouteWithStatusCode,
-} from '../../interface/ExpectedRoute.interface';
+  ITracedRoute,
+  ITracedRouteWithStatusCode,
+} from '../../interface/TracedRoute.interface';
 import { IMessage } from '../../interface/Message.interface';
-import { ExpectedRoute } from '../../model/ExpectedRoute';
 
-describe('ExpectedRouteRepository', () => {
-  let repository: ExpectedRouteRepository;
-  let model: Model<ExpectedRoute>;
+import { TracedRouteRepository } from '../../repository/TracedRoute.repository';
+import { TracedRoute } from '../../model/TracedRoute.model';
+import { ExpectedRoute, createExpectedRoute } from '../../model/ExpectedRoute';
+
+describe('TracedRouteRepository', () => {
+  let repository: TracedRouteRepository;
+  let model: Model<TracedRoute>;
   const results: TestResult[] = [];
 
   const mockModel = {
@@ -23,19 +25,22 @@ describe('ExpectedRouteRepository', () => {
     deleteOne: jest.fn(),
   };
 
+  const geolocation: ExpectedRoute = createExpectedRoute("112311", "31222");
+
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ExpectedRouteRepository,
+        TracedRouteRepository,
         {
-          provide: getModelToken('ExpectedRoute'),
+          provide: getModelToken('TracedRoute'),
           useValue: mockModel,
         },
       ],
     }).compile();
 
-    repository = module.get<ExpectedRouteRepository>(ExpectedRouteRepository);
-    model = module.get<Model<ExpectedRoute>>(getModelToken('ExpectedRoute'));
+    repository = module.get<TracedRouteRepository>(TracedRouteRepository);
+    model = module.get<Model<TracedRoute>>(getModelToken('TracedRoute'));
   });
 
   afterAll(() => {
@@ -43,119 +48,123 @@ describe('ExpectedRouteRepository', () => {
   });
 
   it('should create expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation };
     const message: IMessage = {
       status: 201,
-      message: 'Rota Esperada criada com sucesso!',
+      message: 'rota criada com sucesso!',
     };
 
     mockModel.findOne.mockResolvedValue(null);
     mockModel.create.mockResolvedValue(undefined);
 
-    const result = await repository.createExpectedRoute(route);
+    const result = await repository.createTracedRoute(route);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: createExpectedRoute',
+      route: 'Repository: createTracedRoute',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      $or: [{ latitude: '123' }, { longitude: '456' }],
+      $or: [{ destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation }]
     });
     expect(mockModel.create).toHaveBeenCalledWith(route);
   });
 
   it('should get all expected routes', async () => {
-    const routes: IExpectedRoute[] = [{ latitude: '123', longitude: '456' }];
-    const response: IExpectedRouteWithStatusCode = {
+    const routes: ITracedRoute[] = [{ destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation }];
+    const response: ITracedRouteWithStatusCode = {
       status: 200,
-      expectedRoutes: routes,
+      tracedRoutes: routes,
     };
 
     mockModel.find.mockResolvedValue(routes);
 
-    const result = await repository.getAllExpectedRoutes();
+    const result = await repository.getAllTracedRoutes();
 
     expect(result).toEqual(response);
     results.push({
-      route: 'Repository: getAllExpectedRoutes',
+      route: 'Repository: getAllTracedRoutes',
       status: 'Passed',
     });
     expect(mockModel.find).toHaveBeenCalledWith({}, { _id: 0, __v: 0 });
   });
 
   it('should alter expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation };
     const message: IMessage = {
       status: 201,
-      message: 'Rota Esperada atualizada com sucesso!',
+      message: 'Rota traçada atualizada com sucesso!',
     };
 
-    mockModel.findOne.mockResolvedValue({ latitude: '123', longitude: '456' });
+    mockModel.findOne.mockResolvedValue({ destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation });
     mockModel.updateOne.mockResolvedValue(undefined);
 
-    const result = await repository.alterExpectedRoute('123', '456', route);
+    const result = await repository.alterTracedRoute('Rua Souza Aparecido', 'Av José Carlos Lima', geolocation);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: alterExpectedRoute',
+      route: 'Repository: alterTracedRoute',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      destiny: 'Rua Souza Aparecido',
+      departure: 'Av José Carlos Lima',
+      geolocation: geolocation
     });
     expect(mockModel.updateOne).toHaveBeenCalledWith(
-      { latitude: '123', longitude: '456' },
+      { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation },
       route,
     );
   });
 
   it('should delete expected route', async () => {
-    const route: IExpectedRoute = { latitude: '123', longitude: '456' };
+    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation };
     const message: IMessage = {
       status: 201,
-      message: 'Rota Esperada excluída com sucesso!',
+      message: 'Rota traçada excluída com sucesso!',
     };
 
     mockModel.findOne.mockResolvedValue(route);
     mockModel.deleteOne.mockResolvedValue(undefined);
 
-    const result = await repository.deleteExpectedRoute('123', '456');
+    const result = await repository.deleteTracedRoute('Rua Souza Aparecido', 'Av José Carlos Lima', geolocation);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: deleteExpectedRoute',
+      route: 'Repository: deleteTracedRoute',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      destiny: 'Rua Souza Aparecido',
+      departure: 'Av José Carlos Lima',
+      geolocation: geolocation
     });
     expect(mockModel.deleteOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      destiny: 'Rua Souza Aparecido',
+      departure: 'Av José Carlos Lima',
+      geolocation: geolocation
     });
   });
 
   it('should return 404 if expected route does not exist', async () => {
     const message: IMessage = {
       status: 404,
-      message: 'Rota Esperada não existe, por favor verificar.',
+      message: 'Esta rota não existe, por favor verificar.',
     };
 
     mockModel.findOne.mockResolvedValue(null);
 
-    const result = await repository.deleteExpectedRoute('123', '456');
+    const result = await repository.deleteTracedRoute('Rua Souza Aparecido', 'Av José Carlos Lima', geolocation);
 
     expect(result).toEqual(message);
     results.push({
-      route: 'Repository: deleteExpectedRoute (Not Found)',
+      route: 'Repository: deleteTracedRoute (Not Found)',
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      latitude: '123',
-      longitude: '456',
+      destiny: 'Rua Souza Aparecido',
+      departure: 'Av José Carlos Lima',
+      geolocation: geolocation
     });
   });
 });

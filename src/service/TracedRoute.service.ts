@@ -7,6 +7,7 @@ import { IMessage } from '../interface/Message.interface';
 import { errorMessage } from '../utils/error';
 import { TracedRouteDTO } from '../dto/TracedRoute.dto';
 import { TracedRouteRepository } from '../repository/TracedRoute.repository';
+import { ExpectedRoute } from 'src/model/ExpectedRoute';
 
 @Injectable()
 export class TracedRouteService {
@@ -53,12 +54,13 @@ export class TracedRouteService {
   }
 
 
-  alterTracedRoute(latitude: string, longitude: string, body: ITracedRoute): Promise<IMessage> {
+  alterTracedRoute(destiny: string, departure: string, geolocation: ExpectedRoute, body: ITracedRoute): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
+        
         TracedRouteDTO.parse(body);
         this.repository
-          .alterTracedRoute(latitude, longitude, body)
+          .alterTracedRoute(destiny, departure, geolocation)
           .then((result) => {
             resolve(result);
           })
@@ -77,10 +79,10 @@ export class TracedRouteService {
     });
   }
 
-  deleteTracedRoute(latitude: string, longitude: string): Promise<IMessage> {
+  deleteTracedRoute(destiny: string, departure: string, geolocation: ExpectedRoute): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       this.repository
-        .deleteTracedRoute(latitude, longitude)
+        .deleteTracedRoute(destiny, departure, geolocation)
         .then((result) => {
           resolve(result);
         })

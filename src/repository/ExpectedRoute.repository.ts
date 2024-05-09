@@ -16,7 +16,7 @@ export class ExpectedRouteRepository {
         private readonly ExpectedRouteModel: Model<ExpectedRoute>,
     ) { }
 
-    createExpectedRoute(body: IExpectedRoute): Promise<IMessage> {
+    async createExpectedRoute(body: IExpectedRoute): Promise<IMessage> {
         return this.ExpectedRouteModel
             .findOne({
                 $or: [
@@ -28,7 +28,7 @@ export class ExpectedRouteRepository {
                 if (existingExpectedRoute) {
                     return {
                         status: 409,
-                        message: 'Esta rota já existe, por favor verificar.',
+                        message: 'Esta rota já existe.',
                     };
                 } else {
                     return this.ExpectedRouteModel
@@ -49,7 +49,7 @@ export class ExpectedRouteRepository {
             });
     }
 
-    getAllExpectedRoutes(): Promise<IExpectedRouteWithStatusCode> {
+    async getAllExpectedRoutes(): Promise<IExpectedRouteWithStatusCode> {
         return this.ExpectedRouteModel
             .find({}, { _id: 0, __v: 0 })
             .then((ExpectedRoutes: IExpectedRoute[]) => {
@@ -60,14 +60,14 @@ export class ExpectedRouteRepository {
             });
     }
 
-    alterExpectedRoute(latitude: string, longitude: string, body: IExpectedRoute): Promise<IMessage> {
+    async alterExpectedRoute(latitude: string, longitude: string, body: IExpectedRoute): Promise<IMessage> {
         return this.ExpectedRouteModel
             .findOne({ latitude: latitude, longitude: longitude })
             .then((existingExpectedRoute) => {
                 if (!existingExpectedRoute) {
                     return {
                         status: 404,
-                        message: 'Rota Esperada não existe, por favor verificar.',
+                        message: 'Esta rota não existe, por favor verificar.',
                     };
                 } else {
                     return this.ExpectedRouteModel
@@ -94,14 +94,14 @@ export class ExpectedRouteRepository {
             });
     }
 
-    deleteExpectedRoute(latitude: string, longitude: string): Promise<IMessage> {
+    async deleteExpectedRoute(latitude: string, longitude: string): Promise<IMessage> {
         return this.ExpectedRouteModel
             .findOne({ latitude: latitude, longitude: longitude })
             .then((existingExpectedRoute) => {
                 if (!existingExpectedRoute) {
                     return {
                         status: 404,
-                        message: 'Rota Esperada não existe, por favor verificar.',
+                        message: 'Esta rota não existe, por favor verificar.',
                     };
                 } else {
                     return this.ExpectedRouteModel.deleteOne({ latitude: latitude, longitude: longitude }).then(() => {

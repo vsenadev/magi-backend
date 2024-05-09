@@ -16,7 +16,7 @@ export class ProductRepository {
     private readonly ProductModel: Model<Product>,
   ) { }
 
-  createProduct(body: IProduct): Promise<IMessage> {
+  async createProduct(body: IProduct): Promise<IMessage> {
     return this.ProductModel
       .findOne({
         $or: [
@@ -54,7 +54,7 @@ export class ProductRepository {
       });
   }
 
-  getAllProducts(): Promise<IProductWithStatusCode> {
+  async getAllProducts(): Promise<IProductWithStatusCode> {
     return this.ProductModel
       .find({}, { _id: 0, __v: 0 })
       .then((products: IProduct[]) => {
@@ -65,7 +65,7 @@ export class ProductRepository {
       });
   }
 
-  alterProduct(sku: string, body: IProduct): Promise<IMessage> {
+  async alterProduct(sku: string, body: IProduct): Promise<IMessage> {
     return this.ProductModel
       .findOne({ sku: sku })
       .then((existingProduct) => {
@@ -103,7 +103,7 @@ export class ProductRepository {
       });
   }
 
-  deleteProduct(sku: string): Promise<IMessage> {
+  async deleteProduct(sku: string): Promise<IMessage> {
     return this.ProductModel
       .findOne({ sku: sku })
       .then((existingProduct) => {

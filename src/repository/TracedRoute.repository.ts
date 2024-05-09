@@ -8,6 +8,7 @@ import {
 } from '../interface/TracedRoute.interface';
 import { IMessage } from '../interface/Message.interface';
 import { TracedRoute } from '../model/TracedRoute.model';
+import { ExpectedRoute } from 'src/model/ExpectedRoute';
 
 @Injectable()
 export class TracedRouteRepository {
@@ -16,7 +17,7 @@ export class TracedRouteRepository {
         private readonly TracedRouteModel: Model<TracedRoute>,
     ) { }
 
-    createTracedRoute(body: ITracedRoute): Promise<IMessage> {
+    async createTracedRoute(body: ITracedRoute): Promise<IMessage> {
         return this.TracedRouteModel
             .findOne({
                 $or: [
@@ -29,7 +30,7 @@ export class TracedRouteRepository {
                 if (existingTracedRoute) {
                     return {
                         status: 409,
-                        message: 'Este produto já existe, por favor verificar.',
+                        message: 'Esta rota já existe.',
                     };
                 } else {
                     return this.TracedRouteModel
@@ -41,7 +42,7 @@ export class TracedRouteRepository {
                         .then(() => {
                             return {
                                 status: 201,
-                                message: 'Produto criado com sucesso!',
+                                message: 'rota criada com sucesso!',
                             };
                         });
                 }
@@ -51,7 +52,7 @@ export class TracedRouteRepository {
             });
     }
 
-    getAllTracedRoutes(): Promise<ITracedRouteWithStatusCode> {
+    async getAllTracedRoutes(): Promise<ITracedRouteWithStatusCode> {
         return this.TracedRouteModel
             .find({}, { _id: 0, __v: 0 })
             .then((TracedRoutes: ITracedRoute[]) => {
@@ -62,31 +63,33 @@ export class TracedRouteRepository {
             });
     }
 
-    alterTracedRoute(latitude: string, longitude: string, body: ITracedRoute): Promise<IMessage> {
+    async alterTracedRoute(destiny: string, departure: string, geolocation: ExpectedRoute): Promise<IMessage> {
         return this.TracedRouteModel
-            .findOne({ latitude: latitude, longitude: longitude })
+            .findOne({ destiny: destiny, departure: departure, geolocation: geolocation })
             .then((existingTracedRoute) => {
                 if (!existingTracedRoute) {
                     return {
                         status: 404,
-                        message: 'Rota Esperada não existe, por favor verificar.',
+                        message: 'Esta rota não existe, por favor verificar.',
                     };
                 } else {
                     return this.TracedRouteModel
                         .updateOne(
                             {
-                                latitude: latitude,
-                                longitude: longitude
+                                destiny: destiny,
+                                departure: departure,
+                                geolocation: geolocation
                             },
                             {
-                                latitude: latitude,
-                                longitude: longitude
+                                destiny: destiny,
+                                departure: departure,
+                                geolocation: geolocation
                             }
                         )
                         .then(() => {
                             return {
                                 status: 201,
-                                message: 'Rota Esperada atualizada com sucesso!',
+                                message: 'Rota traçada atualizada com sucesso!',
                             };
                         });
                 }
@@ -96,20 +99,20 @@ export class TracedRouteRepository {
             });
     }
 
-    deleteTracedRoute(latitude: string, longitude: string): Promise<IMessage> {
+    async deleteTracedRoute(destiny: string, departure: string, geolocation: ExpectedRoute): Promise<IMessage> {
         return this.TracedRouteModel
-            .findOne({ latitude: latitude, longitude: longitude })
+            .findOne({ destiny: destiny, departure: departure, geolocation: geolocation })
             .then((existingTracedRoute) => {
                 if (!existingTracedRoute) {
                     return {
                         status: 404,
-                        message: 'Rota Esperada não existe, por favor verificar.',
+                        message: 'Esta rota não existe, por favor verificar.',
                     };
                 } else {
-                    return this.TracedRouteModel.deleteOne({ latitude: latitude, longitude: longitude }).then(() => {
+                    return this.TracedRouteModel.deleteOne({ destiny: destiny, departure: departure, geolocation: geolocation }).then(() => {
                         return {
                             status: 201,
-                            message: 'Rota Esperada excluída com sucesso!',
+                            message: 'Rota traçada excluída com sucesso!',
                         };
                     });
                 }

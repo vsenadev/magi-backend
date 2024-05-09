@@ -1,4 +1,4 @@
-import { ExpectedRoute } from "../model/ExpectedRoute";
+import { ExpectedRoute } from "src/model/ExpectedRoute";
 
 export interface ITracedRoute {
     destiny: string;

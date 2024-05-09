@@ -5,10 +5,11 @@ import {
 } from '../interface/TracedRoute.interface';
 import { IMessage } from '../interface/Message.interface';
 import { TracedRouteService } from '../service/TracedRoute.service';
+import { ExpectedRoute } from 'src/model/ExpectedRoute';
 
 @Controller('api/TracedRoutes')
 export class TracedRouteController {
-  constructor(private readonly service: TracedRouteService) {}
+  constructor(private readonly service: TracedRouteService) { }
 
   @Post('')
   createTracedRoute(@Body() body: ITracedRoute): Promise<IMessage> {
@@ -20,16 +21,15 @@ export class TracedRouteController {
     return this.service.getAllTracedRoutes();
   }
 
-  @Put('/latitude/:latitude/longitude/:longitude')
+  @Put('/destiny/:destiny/departure/:departure/geolocation/:geolocation')
   alterTracedRoute(
-    @Param('latitude') latitude: string, @Param('longitude') longitude: string,
-    @Body() body: ITracedRoute,
-  ): Promise<IMessage> {
-    return this.service.alterTracedRoute(latitude, longitude, body);
+    @Param('destiny') destiny: string, @Param('departure') departure: string, @Param('geolocation') geolocation: ExpectedRoute,
+    @Body() body: ITracedRoute): Promise<IMessage> {
+    return this.service.alterTracedRoute(destiny, departure, geolocation, body);
   }
 
-  @Delete('/latitude/:latitude/longitude/:longitude')
-  deleteTracedRoute(@Param('latitude') latitude: string, @Param('longitude') longitude: string): Promise<IMessage> {
-    return this.service.deleteTracedRoute(latitude, longitude);
+  @Delete('/destiny/:destiny/departure/:departure/geolocation/:geolocation')
+  deleteTracedRoute(@Param('destiny') destiny: string, @Param('departure') departure: string, @Param('geolocation') geolocation: ExpectedRoute, @Body() body: ITracedRoute): Promise<IMessage> {
+    return this.service.deleteTracedRoute(destiny, departure, geolocation);
   }
 }

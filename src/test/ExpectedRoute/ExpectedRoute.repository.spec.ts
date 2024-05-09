@@ -141,7 +141,7 @@ describe('ExpectedRouteRepository', () => {
   it('should return 404 if expected route does not exist', async () => {
     const message: IMessage = {
       status: 404,
-      message: 'Rota Esperada não existe, por favor verificar.',
+      message: 'Esta rota não existe, por favor verificar.',
     };
 
     mockModel.findOne.mockResolvedValue(null);

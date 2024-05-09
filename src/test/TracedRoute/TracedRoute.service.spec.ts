@@ -21,7 +21,7 @@ describe('TracedRouteService', () => {
     deleteTracedRoute: jest.fn(),
   };
 
-  const rota: ExpectedRoute = createExpectedRoute("123124", "141325");
+  const geolocation: ExpectedRoute = createExpectedRoute("123124", "141325");
 
 
   beforeEach(async () => {
@@ -44,7 +44,7 @@ describe('TracedRouteService', () => {
   });
 
   it('should create traced route', async () => {
-    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: rota };
+    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation };
     const message: IMessage = {
       status: 201,
       message: 'Traced route created successfully!',
@@ -61,7 +61,7 @@ describe('TracedRouteService', () => {
   it('should get all traced routes', async () => {
     const routes: ITracedRouteWithStatusCode = {
       status: 200,
-      tracedRoutes: [{ destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: rota }],
+      tracedRoutes: [{ destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation }],
     };
 
     mockRepository.getAllTracedRoutes.mockResolvedValue(routes);
@@ -73,7 +73,7 @@ describe('TracedRouteService', () => {
   });
 
   it('should alter traced route', async () => {
-    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: rota };
+    const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation };
     const message: IMessage = {
       status: 201,
       message: 'Traced route updated successfully!',
@@ -81,7 +81,7 @@ describe('TracedRouteService', () => {
 
     mockRepository.alterTracedRoute.mockResolvedValue(message);
 
-    const result = await service.alterTracedRoute('123', '456', route);
+    const result = await service.alterTracedRoute('123', '456', geolocation, route);
 
     expect(result).toEqual(message);
     results.push({ route: 'Service: alterTracedRoute', status: 'Passed' });
@@ -95,7 +95,7 @@ describe('TracedRouteService', () => {
 
     mockRepository.deleteTracedRoute.mockResolvedValue(message);
 
-    const result = await service.deleteTracedRoute('123', '456');
+    const result = await service.deleteTracedRoute('Rua Souza Aparecido', 'Av José Carlos Lima', geolocation);
 
     expect(result).toEqual(message);
     results.push({ route: 'Service: deleteTracedRoute', status: 'Passed' });
