@@ -28,7 +28,7 @@ export class ExpectedRouteRepository {
                 if (existingExpectedRoute) {
                     return {
                         status: 409,
-                        message: 'Este produto já existe, por favor verificar.',
+                        message: 'Esta rota já existe, por favor verificar.',
                     };
                 } else {
                     return this.ExpectedRouteModel
@@ -39,7 +39,7 @@ export class ExpectedRouteRepository {
                         .then(() => {
                             return {
                                 status: 201,
-                                message: 'Produto criado com sucesso!',
+                                message: 'Rota Esperada criada com sucesso!',
                             };
                         });
                 }
