@@ -80,7 +80,7 @@ beforeEach(async () => {
 
     expect(result).toEqual(message);
     results.push({
-      route: 'PUT /api/TracedRoutes/latitude/:latitude/longitude/:longitude',
+      route: 'PUT /api/TracedRoutes/destiny/:destiny/departure/:departure/geolocation/:geolocation',
       status: 'Passed',
     });
   });
@@ -96,7 +96,7 @@ beforeEach(async () => {
     // Assert
     expect(result).toEqual(message);
     results.push({
-      route: 'DELETE /api/TracedRoutes/latitude/:latitude/longitude/:longitude',
+      route: 'DELETE /api/TracedRoutes/destiny/:destiny/departure/:departure/geolocation/:geolocation',
       status: 'Passed',
     });
   });

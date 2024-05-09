@@ -47,7 +47,7 @@ describe('TracedRouteRepository', () => {
     printResults(results);
   });
 
-  it('should create expected route', async () => {
+  it('should create traced route', async () => {
     const route: ITracedRoute = { destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation };
     const message: IMessage = {
       status: 201,
@@ -65,7 +65,7 @@ describe('TracedRouteRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      $or: [{ destiny: 'Rua Souza Aparecido', departure: 'Av José Carlos Lima', geolocation: geolocation }]
+      $or: [{ destiny: 'Rua Souza Aparecido' }, { departure: 'Av José Carlos Lima' } , { geolocation: geolocation }],
     });
     expect(mockModel.create).toHaveBeenCalledWith(route);
   });
