@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { LockStatusService } from '../../service/LockStatus.service';
 import { LockStatusController } from '../../controller/LockStatus.controller';
 import { IMessage } from '../../interface/Message.interface';

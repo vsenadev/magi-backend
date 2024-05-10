@@ -11,7 +11,7 @@ import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly repository: ProductRepository) { }
+  constructor(private readonly repository: ProductRepository) {}
 
   createProduct(body: IProduct): Promise<IMessage> {
     return new Promise((resolve, reject) => {
@@ -53,7 +53,6 @@ export class ProductService {
         });
     });
   }
-
 
   alterProduct(sku: string, body: IProduct): Promise<IMessage> {
     return new Promise((resolve, reject) => {

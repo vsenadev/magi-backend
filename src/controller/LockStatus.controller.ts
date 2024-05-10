@@ -1,19 +1,10 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { LockStatusService } from '../service/LockStatus.service';
 import { IMessage } from '../interface/Message.interface';
-import {
-  ILockStatus
-} from '../interface/LockStatus.interface';
+import { ILockStatus } from '../interface/LockStatus.interface';
 
 @Controller('api/lockstatus')
-export class LockStatusController{
+export class LockStatusController {
   constructor(private readonly service: LockStatusService) {}
 
   @Post('')

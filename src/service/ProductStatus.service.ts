@@ -10,7 +10,7 @@ import { ProductStatusRepository } from '../repository/ProductStatus.repository'
 
 @Injectable()
 export class ProductStatusService {
-  constructor(private readonly repository: ProductStatusRepository) { }
+  constructor(private readonly repository: ProductStatusRepository) {}
 
   createProductStatus(body: IProductStatus): Promise<IMessage> {
     return new Promise((resolve, reject) => {

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { ProductService } from '../../service/Product.service';
 import { ProductRepository } from '../../repository/Product.repository';
 import {
@@ -40,7 +40,15 @@ describe('ProductService', () => {
   });
 
   it('should create product', async () => {
-    const product: IProduct = { sku: '12', name: 'New Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      sku: '12',
+      name: 'New Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+    };
     const message: IMessage = {
       status: 201,
       message: 'Produto criado com sucesso!',
@@ -57,7 +65,17 @@ describe('ProductService', () => {
   it('should get all products', async () => {
     const products: IProductWithStatusCode = {
       status: 200,
-      products: [{ sku: '12', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 }],
+      products: [
+        {
+          sku: '12',
+          name: 'Product',
+          type: 'Type',
+          value: 10.99,
+          length: 10.99,
+          width: 10.99,
+          height: 10.99,
+        },
+      ],
     };
 
     mockRepository.getAllProducts.mockResolvedValue(products);
@@ -69,7 +87,14 @@ describe('ProductService', () => {
   });
 
   it('should alter product', async () => {
-    const product: IProduct = { name: 'Update Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      name: 'Update Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+    };
     const message: IMessage = {
       status: 201,
       message: 'Produto atualizado com sucesso!',

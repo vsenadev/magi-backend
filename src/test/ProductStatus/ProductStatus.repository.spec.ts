@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { ProductStatusRepository } from '../../repository/ProductStatus.repository';
 import { ProductStatus } from '../../model/ProductStatus.model';
 import {

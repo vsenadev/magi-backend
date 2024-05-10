@@ -17,13 +17,12 @@ export class ProductStatusRepository {
   ) {}
 
   createProductStatus(body: IProductStatus): Promise<IMessage> {
-    return this.ProductStatusModel
-      .findOne({
-        $or: [
-          { code: body.code },
-          { description: body.description.toUpperCase() },
-        ],
-      })
+    return this.ProductStatusModel.findOne({
+      $or: [
+        { code: body.code },
+        { description: body.description.toUpperCase() },
+      ],
+    })
       .then((existingStatus) => {
         if (existingStatus) {
           return {
@@ -31,17 +30,15 @@ export class ProductStatusRepository {
             message: 'Status do produto já existe, por favor verificar.',
           };
         } else {
-          return this.ProductStatusModel
-            .create({
-              code: body.code,
-              description: body.description.toUpperCase(),
-            })
-            .then((): IMessage => {
-              return {
-                status: 201,
-                message: 'Status do produto criado com sucesso!',
-              };
-            });
+          return this.ProductStatusModel.create({
+            code: body.code,
+            description: body.description.toUpperCase(),
+          }).then((): IMessage => {
+            return {
+              status: 201,
+              message: 'Status do produto criado com sucesso!',
+            };
+          });
         }
       })
       .catch((error) => {
@@ -50,19 +47,18 @@ export class ProductStatusRepository {
   }
 
   getAllProductStatus(): Promise<IProductStatusWithStatusCode> {
-    return this.ProductStatusModel
-      .find({}, { _id: 0, __v: 0 })
-      .then((ProductsStatus: IProductStatus[]) => {
+    return this.ProductStatusModel.find({}, { _id: 0, __v: 0 }).then(
+      (ProductsStatus: IProductStatus[]) => {
         return {
           status: 200,
           productStatus: ProductsStatus,
         };
-      });
+      },
+    );
   }
 
   alterProductStatus(code: number, body: IProductStatus): Promise<IMessage> {
-    return this.ProductStatusModel
-      .findOne({ code: code })
+    return this.ProductStatusModel.findOne({ code: code })
       .then((existingStatus) => {
         if (!existingStatus) {
           return {
@@ -70,21 +66,19 @@ export class ProductStatusRepository {
             message: 'Status do produto não existe, por favor verificar.',
           };
         } else {
-          return this.ProductStatusModel
-            .updateOne(
-              {
-                code: code,
-              },
-              {
-                description: body.description.toUpperCase(),
-              },
-            )
-            .then((): IMessage => {
-              return {
-                status: 201,
-                message: 'Status do produto atualizado com sucesso!',
-              };
-            });
+          return this.ProductStatusModel.updateOne(
+            {
+              code: code,
+            },
+            {
+              description: body.description.toUpperCase(),
+            },
+          ).then((): IMessage => {
+            return {
+              status: 201,
+              message: 'Status do produto atualizado com sucesso!',
+            };
+          });
         }
       })
       .catch((error) => {
@@ -93,8 +87,7 @@ export class ProductStatusRepository {
   }
 
   deleteProductStatus(code: number): Promise<IMessage> {
-    return this.ProductStatusModel
-      .findOne({ code: code })
+    return this.ProductStatusModel.findOne({ code: code })
       .then((existingStatus) => {
         if (!existingStatus) {
           return {
@@ -102,14 +95,14 @@ export class ProductStatusRepository {
             message: 'Status do produto não existe, por favor verificar.',
           };
         } else {
-          return this.ProductStatusModel
-            .deleteOne({ code: code })
-            .then((): IMessage => {
+          return this.ProductStatusModel.deleteOne({ code: code }).then(
+            (): IMessage => {
               return {
                 status: 201,
                 message: 'Status do produto excluido com sucesso!',
               };
-            });
+            },
+          );
         }
       })
       .catch((error) => {

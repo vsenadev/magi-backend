@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { LockStatusRepository } from '../repository/LockStatus.repository';
 import { IMessage } from '../interface/Message.interface';
-import {
-  ILockStatus,
-} from '../interface/LockStatus.interface';
+import { ILockStatus } from '../interface/LockStatus.interface';
 import { LockStatusDto } from '../dto/LockStatus.dto';
 import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class LockStatusService {
-  constructor(private readonly repository: LockStatusRepository) { }
+  constructor(private readonly repository: LockStatusRepository) {}
 
   createLockStatus(body: ILockStatus): Promise<IMessage> {
     return new Promise((resolve, reject) => {

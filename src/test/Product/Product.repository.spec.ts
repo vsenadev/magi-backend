@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { ProductRepository } from '../../repository/Product.repository';
 import { Product } from '../../model/Product.model';
 import {
@@ -43,7 +43,15 @@ describe('ProductRepository', () => {
   });
 
   it('should create product', async () => {
-    const product: IProduct = { sku: '12', name: 'New Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      sku: '12',
+      name: 'New Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+    };
     const message: IMessage = {
       status: 201,
       message: 'Produto criado com sucesso!',
@@ -66,7 +74,17 @@ describe('ProductRepository', () => {
   });
 
   it('should get all products', async () => {
-    const products: IProduct[] = [{ sku: '12', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 }];
+    const products: IProduct[] = [
+      {
+        sku: '12',
+        name: 'Product',
+        type: 'Type',
+        value: 10.99,
+        length: 10.99,
+        width: 10.99,
+        height: 10.99,
+      },
+    ];
     const response: IProductWithStatusCode = {
       status: 200,
       products: products,
@@ -85,7 +103,15 @@ describe('ProductRepository', () => {
   });
 
   it('should alter product', async () => {
-    const product: IProduct = { sku: '12', name: 'Update Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      sku: '12',
+      name: 'Update Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+    };
     const message: IMessage = {
       status: 201,
       message: 'Produto atualizado com sucesso!',
@@ -106,7 +132,15 @@ describe('ProductRepository', () => {
   });
 
   it('should delete product', async () => {
-    const product: IProduct = { sku: '12', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      sku: '12',
+      name: 'Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+    };
     const message: IMessage = {
       status: 201,
       message: 'Produto excluído com sucesso!',

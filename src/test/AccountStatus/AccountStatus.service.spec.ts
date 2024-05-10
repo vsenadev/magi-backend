@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { AccountStatusService } from '../../service/AccountStatus.service';
 import { AccountStatusRepository } from '../../repository/AccountStatus.repository';
 import {

@@ -14,16 +14,12 @@ export class ProductRepository {
   constructor(
     @InjectModel(ProductModelName)
     private readonly ProductModel: Model<Product>,
-  ) { }
+  ) {}
 
   async createProduct(body: IProduct): Promise<IMessage> {
-    return this.ProductModel
-      .findOne({
-        $or: [
-          { sku: body.sku },
-          { name: body.name },
-        ],
-      })
+    return this.ProductModel.findOne({
+      $or: [{ sku: body.sku }, { name: body.name }],
+    })
       .then((existingProduct) => {
         if (existingProduct) {
           return {
@@ -31,22 +27,20 @@ export class ProductRepository {
             message: 'Este produto já existe, por favor verificar.',
           };
         } else {
-          return this.ProductModel
-            .create({
-              sku: body.sku,
-              name: body.name,
-              type: body.type,
-              value: body.value,
-              length: body.length,
-              width: body.width,
-              height: body.height,
-            })
-            .then(() => {
-              return {
-                status: 201,
-                message: 'Produto criado com sucesso!',
-              };
-            });
+          return this.ProductModel.create({
+            sku: body.sku,
+            name: body.name,
+            type: body.type,
+            value: body.value,
+            length: body.length,
+            width: body.width,
+            height: body.height,
+          }).then(() => {
+            return {
+              status: 201,
+              message: 'Produto criado com sucesso!',
+            };
+          });
         }
       })
       .catch((error) => {
@@ -55,19 +49,18 @@ export class ProductRepository {
   }
 
   async getAllProducts(): Promise<IProductWithStatusCode> {
-    return this.ProductModel
-      .find({}, { _id: 0, __v: 0 })
-      .then((products: IProduct[]) => {
+    return this.ProductModel.find({}, { _id: 0, __v: 0 }).then(
+      (products: IProduct[]) => {
         return {
           status: 200,
           products: products,
         };
-      });
+      },
+    );
   }
 
   async alterProduct(sku: string, body: IProduct): Promise<IMessage> {
-    return this.ProductModel
-      .findOne({ sku: sku })
+    return this.ProductModel.findOne({ sku: sku })
       .then((existingProduct) => {
         if (!existingProduct) {
           return {
@@ -75,27 +68,25 @@ export class ProductRepository {
             message: 'Produto não existe, por favor verificar.',
           };
         } else {
-          return this.ProductModel
-            .updateOne(
-              {
-                sku: sku
-              }, 
-              {
-                sku: sku,
-                name: body.name,
-                type: body.type,
-                value: body.value,
-                length: body.length,
-                width: body.width,
-                height: body.height,
-              }
-            )
-            .then(() => {
-              return {
-                status: 201,
-                message: 'Produto atualizado com sucesso!',
-              };
-            });
+          return this.ProductModel.updateOne(
+            {
+              sku: sku,
+            },
+            {
+              sku: sku,
+              name: body.name,
+              type: body.type,
+              value: body.value,
+              length: body.length,
+              width: body.width,
+              height: body.height,
+            },
+          ).then(() => {
+            return {
+              status: 201,
+              message: 'Produto atualizado com sucesso!',
+            };
+          });
         }
       })
       .catch((error) => {
@@ -104,8 +95,7 @@ export class ProductRepository {
   }
 
   async deleteProduct(sku: string): Promise<IMessage> {
-    return this.ProductModel
-      .findOne({ sku: sku })
+    return this.ProductModel.findOne({ sku: sku })
       .then((existingProduct) => {
         if (!existingProduct) {
           return {
