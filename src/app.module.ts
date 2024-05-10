@@ -4,6 +4,7 @@ import { AccountStatusModule } from './modules/AccountStatus.module';
 import { UserTypeModule } from './modules/UserType.module';
 import { ProductModule } from './modules/Product.module';
 import { LockStatusModule } from './modules/LockStatus.module';
+import { CompanyModule } from './modules/Company.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { LockStatusModule } from './modules/LockStatus.module';
     UserTypeModule,
     ProductModule,
     LockStatusModule,
+    CompanyModule,
   ],
   controllers: [],
   providers: [],
