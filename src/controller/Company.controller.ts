@@ -28,16 +28,16 @@ export class CompanyController {
     return this.service.getAllCompanies();
   }
 
-  @Put('/id/:id')
+  @Put('/id/:_id')
   alterUserType(
-    @Param('id') id: string,
+    @Param('_id') _id: string,
     @Body() body: ICompany,
   ): Promise<IMessage> {
-    return this.service.alterCompany(id, body);
+    return this.service.alterCompany(_id, body);
   }
 
   @Delete('/id/:id')
-  deleteUserType(@Param('id') id: string): Promise<IMessage> {
-    return this.service.deleteCompany(id);
+  deleteUserType(@Param('_id') _id: string): Promise<IMessage> {
+    return this.service.deleteCompany(_id);
   }
 }

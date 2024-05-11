@@ -6,7 +6,7 @@ import { CompanyModelName } from '../schema/Company.schema';
 import { Company } from '../model/Company.model';
 import {
   ICompany,
-  ICompanyWithStatusCode
+  ICompanyWithStatusCode,
 } from '../interface/Company.interface';
 
 @Injectable()

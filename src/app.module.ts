@@ -5,6 +5,7 @@ import { UserTypeModule } from './modules/UserType.module';
 import { ProductModule } from './modules/Product.module';
 import { LockStatusModule } from './modules/LockStatus.module';
 import { CompanyModule } from './modules/Company.module';
+import { UserModule } from './modules/User.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CompanyModule } from './modules/Company.module';
     ProductModule,
     LockStatusModule,
     CompanyModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
