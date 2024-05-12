@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { DatabaseModule } from './database/Database.module';
 import { AccountStatusModule } from './modules/AccountStatus.module';
 import { UserTypeModule } from './modules/UserType.module';
@@ -9,6 +10,9 @@ import { UserModule } from './modules/User.module';
 
 @Module({
   imports: [
+    MulterModule.register({
+      dest: './uploads',
+    }),
     DatabaseModule,
     AccountStatusModule,
     UserTypeModule,

@@ -1,6 +1,7 @@
 export interface ICompany {
   _id?: string;
   name: string;
+  picture?: string;
   cnpj: string;
   area: string;
   address: IAddress;

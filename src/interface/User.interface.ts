@@ -1,6 +1,7 @@
 export interface IUser {
   _id?: string;
   name: string;
+  picture?: string;
   id_company: string;
   cpf: string;
   telephone: string;

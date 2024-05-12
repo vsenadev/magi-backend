@@ -2,6 +2,7 @@ import { Schema } from 'mongoose';
 import { Company } from '../model/Company.model';
 
 export const CompanySchema = new Schema<Company>({
+  picture: { type: String, required: false },
   name: { type: String, required: true },
   cnpj: { type: String, required: true },
   area: { type: String, required: true },

@@ -6,10 +6,13 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { IMessage } from '../interface/Message.interface';
 import { IUser, IUserWithStatusCode } from '../interface/User.interface';
 import { UserService } from '../service/User.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('api/user')
 export class UserController {
@@ -28,6 +31,15 @@ export class UserController {
   @Put('/id/:_id')
   alterUser(@Param('_id') _id: string, @Body() body: IUser): Promise<IMessage> {
     return this.service.alterUser(_id, body);
+  }
+
+  @Put('/picture/:_id')
+  @UseInterceptors(FileInterceptor('image'))
+  uploadImage(
+    @UploadedFile() image: Express.Multer.File,
+    @Param('_id') _id: string,
+  ) {
+    return this.service.uploadImage(_id, image);
   }
 
   @Delete('/id/:_id')

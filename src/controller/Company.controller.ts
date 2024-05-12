@@ -6,6 +6,8 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { IMessage } from '../interface/Message.interface';
 import {
@@ -13,6 +15,7 @@ import {
   ICompanyWithStatusCode,
 } from '../interface/Company.interface';
 import { CompanyService } from '../service/Company.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('api/company')
 export class CompanyController {
@@ -34,6 +37,15 @@ export class CompanyController {
     @Body() body: ICompany,
   ): Promise<IMessage> {
     return this.service.alterCompany(_id, body);
+  }
+
+  @Put('/picture/:_id')
+  @UseInterceptors(FileInterceptor('image'))
+  uploadImage(
+    @UploadedFile() image: Express.Multer.File,
+    @Param('_id') _id: string,
+  ) {
+    return this.service.uploadImage(_id, image);
   }
 
   @Delete('/id/:id')

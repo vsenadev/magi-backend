@@ -4,6 +4,8 @@ import { UserRepository } from '../repository/User.repository';
 import { IUser, IUserWithStatusCode } from '../interface/User.interface';
 import { UserDto } from '../dto/User.dto';
 import { errorMessage } from '../utils/error';
+import { IImage } from '../interface/Image.interface';
+import axios from 'axios';
 
 @Injectable()
 export class UserService {
@@ -64,6 +66,43 @@ export class UserService {
               status: 500,
               message: errorMessage(JSON.parse(error.message)),
             });
+          });
+      } catch (error) {
+        resolve({
+          status: 400,
+          message: errorMessage(JSON.parse(error.message)),
+        });
+      }
+    });
+  }
+
+  uploadImage(_id: string, image: IImage): Promise<IMessage> {
+    const formData = new FormData();
+    const imageBase64 = image.buffer.toString('base64');
+
+    formData.append('key', process.env.IMAGE_BB_KEY);
+    formData.append('image', imageBase64);
+
+    return new Promise((resolve, reject) => {
+      try {
+        axios
+          .post('https://api.imgbb.com/1/upload', formData)
+          .then((response) => {
+            const imageLink = response.data['data']['image']['url'];
+            this.repository
+              .uploadImage(_id, imageLink)
+              .then((result) => {
+                resolve(result);
+              })
+              .catch((error) => {
+                reject({
+                  status: 500,
+                  message: errorMessage(JSON.parse(error.message)),
+                });
+              });
+          })
+          .catch((error) => {
+            reject(error);
           });
       } catch (error) {
         resolve({

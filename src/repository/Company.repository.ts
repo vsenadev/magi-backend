@@ -29,6 +29,7 @@ export class CompanyRepository {
           return this.companyModel
             .create({
               name: body.name.toUpperCase(),
+              picture: '',
               cnpj: body.cnpj,
               area: body.area,
               address: body.address,
@@ -77,6 +78,7 @@ export class CompanyRepository {
               },
               {
                 name: body.name.toUpperCase(),
+                picture: body.picture,
                 cnpj: body.cnpj,
                 area: body.area,
                 address: body.address,
@@ -89,6 +91,31 @@ export class CompanyRepository {
               return {
                 status: 201,
                 message: 'Empresa atualizada com sucesso!',
+              };
+            });
+        }
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  uploadImage(_id: string, imageLink: string): Promise<IMessage> {
+    return this.companyModel
+      .findOne({ _id: _id })
+      .then((existingCompany) => {
+        if (!existingCompany) {
+          return {
+            status: 404,
+            message: 'Empresa não existe, por favor verificar.',
+          };
+        } else {
+          return this.companyModel
+            .updateOne({ _id: _id }, { picture: imageLink })
+            .then((): IMessage => {
+              return {
+                status: 201,
+                message: 'Foto de perfil atualizada com sucesso!',
               };
             });
         }

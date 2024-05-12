@@ -29,6 +29,7 @@ export class UserRepository {
             .create({
               id_company: body.id_company,
               name: body.name.toUpperCase(),
+              picture: '',
               cpf: body.cpf,
               telephone: body.telephone,
               password: body.password,
@@ -78,6 +79,7 @@ export class UserRepository {
               {
                 id_company: body.id_company,
                 name: body.name.toUpperCase(),
+                picture: body.picture,
                 cpf: body.cpf,
                 telephone: body.telephone,
                 password: body.password,
@@ -90,6 +92,31 @@ export class UserRepository {
               return {
                 status: 201,
                 message: 'User updated successfully',
+              };
+            });
+        }
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  uploadImage(_id: string, imageLink: string): Promise<IMessage> {
+    return this.userModel
+      .findOne({ _id: _id })
+      .then((existingCompany) => {
+        if (!existingCompany) {
+          return {
+            status: 404,
+            message: 'Empresa não existe, por favor verificar.',
+          };
+        } else {
+          return this.userModel
+            .updateOne({ _id: _id }, { picture: imageLink })
+            .then((): IMessage => {
+              return {
+                status: 201,
+                message: 'Foto de perfil atualizada com sucesso!',
               };
             });
         }
