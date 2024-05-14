@@ -1,7 +1,19 @@
-import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { LockStatusService } from '../service/LockStatus.service';
 import { IMessage } from '../interface/Message.interface';
-import { ILockStatus } from '../interface/LockStatus.interface';
+import {
+  ILockStatus,
+  ILockStatusWithStatusCode,
+} from '../interface/LockStatus.interface';
+
 
 @Controller('api/lockstatus')
 export class LockStatusController {
@@ -10,6 +22,11 @@ export class LockStatusController {
   @Post('')
   createLockStatus(@Body() body: ILockStatus): Promise<IMessage> {
     return this.service.createLockStatus(body);
+  }
+
+  @Get('')
+  getAllLockStatus(): Promise<ILockStatusWithStatusCode> {
+    return this.service.getAllLockStatus();
   }
 
   @Put('/code/:code')
