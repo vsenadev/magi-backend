@@ -13,3 +13,7 @@ export interface IProductWithStatusCode {
   status: number;
   products: IProduct[];
 }
+
+export interface IProductWithID {
+  _id: string;
+}
