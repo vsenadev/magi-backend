@@ -35,6 +35,7 @@ export class ProductRepository {
             length: body.length,
             width: body.width,
             height: body.height,
+            idEmpresa: body.idEmpresa,
           }).then(() => {
             return {
               status: 201,
@@ -80,6 +81,7 @@ export class ProductRepository {
               length: body.length,
               width: body.width,
               height: body.height,
+              idEmpresa: body.idEmpresa
             },
           ).then(() => {
             return {

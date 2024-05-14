@@ -7,6 +7,7 @@ export interface IProduct {
   length: number;
   width: number;
   height: number;
+  idEmpresa: string;
 }
 
 export interface IProductWithStatusCode {

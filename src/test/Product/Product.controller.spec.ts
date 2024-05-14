@@ -48,6 +48,7 @@ describe('ProductController', () => {
       length: 10.99,
       width: 10.99,
       height: 10.99,
+      idEmpresa: "2"
     };
     const message: IMessage = { status: 201, message: 'Success' };
 
@@ -71,6 +72,7 @@ describe('ProductController', () => {
           length: 10.99,
           width: 10.99,
           height: 10.99,
+          idEmpresa: "2"
         },
       ],
     };
@@ -92,6 +94,7 @@ describe('ProductController', () => {
       length: 10.99,
       width: 10.99,
       height: 10.99,
+      idEmpresa: "2"
     };
     const message: IMessage = { status: 201, message: 'Updated' };
 

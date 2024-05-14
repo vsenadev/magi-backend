@@ -8,4 +8,5 @@ export interface Product extends Document {
   length: number;
   width: number;
   height: number;
+  idEmpresa: string;
 }

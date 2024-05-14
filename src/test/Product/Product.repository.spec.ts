@@ -51,6 +51,7 @@ describe('ProductRepository', () => {
       length: 10.99,
       width: 10.99,
       height: 10.99,
+      idEmpresa: "2"
     };
     const message: IMessage = {
       status: 201,
@@ -83,6 +84,7 @@ describe('ProductRepository', () => {
         length: 10.99,
         width: 10.99,
         height: 10.99,
+        idEmpresa: "2"
       },
     ];
     const response: IProductWithStatusCode = {
@@ -111,6 +113,7 @@ describe('ProductRepository', () => {
       length: 10.99,
       width: 10.99,
       height: 10.99,
+      idEmpresa: "2"
     };
     const message: IMessage = {
       status: 201,
@@ -140,6 +143,7 @@ describe('ProductRepository', () => {
       length: 10.99,
       width: 10.99,
       height: 10.99,
+      idEmpresa: "2"
     };
     const message: IMessage = {
       status: 201,
