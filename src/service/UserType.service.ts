@@ -10,7 +10,7 @@ import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class UserTypeService {
-  constructor(private readonly repository: UserTypeRepository) { }
+  constructor(private readonly repository: UserTypeRepository) {}
 
   createUserType(body: IUserType): Promise<IMessage> {
     return new Promise((resolve, reject) => {

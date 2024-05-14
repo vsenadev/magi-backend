@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { LockStatusRepository } from '../../repository/LockStatus.repository';
 import { LockStatus } from '../../model/LockStatus.model';
 import { IMessage } from '../../interface/Message.interface';
@@ -57,7 +57,10 @@ describe('LockStatusRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({
-      $or: [{ code: lockStatus.code }, { description: lockStatus.description.toUpperCase() }],
+      $or: [
+        { code: lockStatus.code },
+        { description: lockStatus.description.toUpperCase() },
+      ],
     });
     expect(mockModel.create).toHaveBeenCalledWith({
       code: lockStatus.code,
@@ -105,7 +108,10 @@ describe('LockStatusRepository', () => {
       status: 'Passed',
     });
     expect(mockModel.findOne).toHaveBeenCalledWith({ code });
-    expect(mockModel.updateOne).toHaveBeenCalledWith({ code }, { description: lockStatus.description.toUpperCase() });
+    expect(mockModel.updateOne).toHaveBeenCalledWith(
+      { code },
+      { description: lockStatus.description.toUpperCase() },
+    );
   });
 
   it('should delete lock status', async () => {

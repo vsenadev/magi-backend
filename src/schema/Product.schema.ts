@@ -9,6 +9,7 @@ export const ProductSchema = new Schema<Product>({
   length: { type: Number, required: true },
   width: { type: Number, required: true },
   height: { type: Number, required: true },
+  idEmpresa: { type: String, required: true },
 });
 
 export const ProductModelName = 'Product';

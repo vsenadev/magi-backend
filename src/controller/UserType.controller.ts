@@ -7,11 +7,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { AccountStatusService } from '../service/AccountStatus.service';
-import {
-  IAccountStatus,
-  IAccountStatusWithStatusCode,
-} from '../interface/AccountStatus.interface';
 import { IMessage } from '../interface/Message.interface';
 import {
   IUserType,

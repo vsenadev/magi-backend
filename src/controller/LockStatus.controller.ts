@@ -14,8 +14,9 @@ import {
   ILockStatusWithStatusCode,
 } from '../interface/LockStatus.interface';
 
+
 @Controller('api/lockstatus')
-export class LockStatusController{
+export class LockStatusController {
   constructor(private readonly service: LockStatusService) {}
 
   @Post('')

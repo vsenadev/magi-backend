@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { ProductService } from '../../service/Product.service';
 import { ProductController } from '../../controller/Product.controller';
 import {
@@ -40,7 +40,16 @@ describe('ProductController', () => {
   });
 
   it('should create product', async () => {
-    const product: IProduct = { sku: '123', name: 'New Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      sku: '123',
+      name: 'New Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+      idEmpresa: "2"
+    };
     const message: IMessage = { status: 201, message: 'Success' };
 
     mockService.createProduct.mockResolvedValue(message);
@@ -54,7 +63,18 @@ describe('ProductController', () => {
   it('should get all products', async () => {
     const response: IProductWithStatusCode = {
       status: 200,
-      products: [{ sku: '123', name: 'Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 }],
+      products: [
+        {
+          sku: '123',
+          name: 'Product',
+          type: 'Type',
+          value: 10.99,
+          length: 10.99,
+          width: 10.99,
+          height: 10.99,
+          idEmpresa: "2"
+        },
+      ],
     };
 
     mockService.getAllProducts.mockResolvedValue(response);
@@ -66,7 +86,16 @@ describe('ProductController', () => {
   });
 
   it('should alter product', async () => {
-    const product: IProduct = { sku: '123', name: 'Update Product', type: "Type" , value: 10.99 , length: 10.99 , width: 10.99 , height: 10.99 };
+    const product: IProduct = {
+      sku: '123',
+      name: 'Update Product',
+      type: 'Type',
+      value: 10.99,
+      length: 10.99,
+      width: 10.99,
+      height: 10.99,
+      idEmpresa: "2"
+    };
     const message: IMessage = { status: 201, message: 'Updated' };
 
     mockService.alterProduct.mockResolvedValue(message);

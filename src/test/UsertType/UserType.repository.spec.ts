@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { IMessage } from '../../interface/Message.interface';
 import { UserTypeRepository } from '../../repository/UsertType.repository';
 import { UserType } from '../../model/UserType.model';
