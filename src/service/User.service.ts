@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { IMessage } from '../interface/Message.interface';
-import { CompanyRepository } from '../repository/Company.repository';
-import {
-  ICompany,
-  ICompanyWithStatusCode,
-} from '../interface/Company.interface';
-import { CompanyDto } from '../dto/Company.dto';
+import { UserRepository } from '../repository/User.repository';
+import { IUser, IUserWithStatusCode } from '../interface/User.interface';
+import { UserDto } from '../dto/User.dto';
 import { errorMessage } from '../utils/error';
 import { IImage } from '../interface/Image.interface';
 import axios from 'axios';
 
 @Injectable()
-export class CompanyService {
-  constructor(private readonly repository: CompanyRepository) {}
+export class UserService {
+  constructor(private readonly repository: UserRepository) {}
 
-  createCompany(body: ICompany): Promise<IMessage> {
+  createUser(body: IUser): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
-        CompanyDto.parse(body);
+        UserDto.parse(body);
 
         this.repository
-          .createCompany(body)
+          .createUser(body)
           .then((result) => {
             resolve(result);
           })
@@ -39,11 +36,11 @@ export class CompanyService {
     });
   }
 
-  getAllCompanies(): Promise<ICompanyWithStatusCode> {
+  getAllUsers(): Promise<IUserWithStatusCode> {
     return new Promise((resolve, reject) => {
       this.repository
-        .getAllCompanies()
-        .then((result: ICompanyWithStatusCode) => {
+        .getAllUsers()
+        .then((result: IUserWithStatusCode) => {
           resolve(result);
         })
         .catch((error) => {
@@ -55,12 +52,12 @@ export class CompanyService {
     });
   }
 
-  alterCompany(_id: string, body: ICompany): Promise<IMessage> {
+  alterUser(_id: string, body: IUser): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
-        CompanyDto.parse(body);
+        UserDto.parse(body);
         this.repository
-          .alterCompany(_id, body)
+          .alterUser(_id, body)
           .then((result) => {
             resolve(result);
           })
@@ -116,10 +113,10 @@ export class CompanyService {
     });
   }
 
-  deleteCompany(_id: string): Promise<IMessage> {
+  deleteUser(_id: string): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       this.repository
-        .deleteCompany(_id)
+        .deleteUser(_id)
         .then((result) => {
           resolve(result);
         })

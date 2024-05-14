@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const CompanyDto = z.object({
   id: z.string().uuid().optional(),
+  picture: z.string().optional(),
   name: z.string().min(1).max(100),
   cnpj: z.string().min(18).max(18),
   area: z.string().min(3).max(50),

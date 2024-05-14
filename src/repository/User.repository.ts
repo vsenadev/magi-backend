@@ -2,45 +2,45 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IMessage } from '../interface/Message.interface';
-import { CompanyModelName } from '../schema/Company.schema';
-import { Company } from '../model/Company.model';
-import {
-  ICompany,
-  ICompanyWithStatusCode,
-} from '../interface/Company.interface';
+import { UserModelName } from '../schema/User.schema';
+import { User } from '../model/User.model';
+import { IUser, IUserWithStatusCode } from '../interface/User.interface';
 
 @Injectable()
-export class CompanyRepository {
+export class UserRepository {
   constructor(
-    @InjectModel(CompanyModelName)
-    private readonly companyModel: Model<Company>,
+    @InjectModel(UserModelName)
+    private readonly userModel: Model<User>,
   ) {}
 
-  createCompany(body: ICompany): Promise<IMessage> {
-    return this.companyModel
-      .findOne({ cnpj: body.cnpj })
-      .then((existingCompany) => {
-        if (existingCompany) {
+  createUser(body: IUser): Promise<IMessage> {
+    return this.userModel
+      .findOne({
+        $or: [{ mail: body.mail }, { cpf: body.cpf }],
+      })
+      .then((existingUser) => {
+        if (existingUser) {
           return {
             status: 409,
-            message: 'Empresa já existe, por favor verificar.',
+            message: 'Usuário já existe, por favor verificar.',
           };
         } else {
-          return this.companyModel
+          return this.userModel
             .create({
+              id_company: body.id_company,
               name: body.name.toUpperCase(),
               picture: '',
-              cnpj: body.cnpj,
-              area: body.area,
-              address: body.address,
-              senders: body.senders,
+              cpf: body.cpf,
+              telephone: body.telephone,
+              password: body.password,
+              mail: body.mail,
               type: body.type,
               status: body.status,
             })
             .then((): IMessage => {
               return {
                 status: 201,
-                message: 'Empresa criada com sucesso!',
+                message: 'User created successfully',
               };
             });
         }
@@ -50,39 +50,40 @@ export class CompanyRepository {
       });
   }
 
-  getAllCompanies(): Promise<ICompanyWithStatusCode> {
-    return this.companyModel
+  getAllUsers(): Promise<IUserWithStatusCode> {
+    return this.userModel
       .find({}, { _id: 0, __v: 0 })
-      .then((companies: ICompany[]) => {
+      .then((users: IUser[]) => {
         return {
           status: 200,
-          companies: companies,
+          users: users,
         };
       });
   }
 
-  alterCompany(_id: string, body: ICompany): Promise<IMessage> {
-    return this.companyModel
+  alterUser(_id: string, body: IUser): Promise<IMessage> {
+    return this.userModel
       .findOne({ _id: _id })
-      .then((existingCompany) => {
-        if (!existingCompany) {
+      .then((existingUser) => {
+        if (!existingUser) {
           return {
             status: 404,
-            message: 'Empresa não existe, por favor verificar.',
+            message: 'Usuário não existe, por favor verificar.',
           };
         } else {
-          return this.companyModel
+          return this.userModel
             .updateOne(
               {
                 _id: _id,
               },
               {
+                id_company: body.id_company,
                 name: body.name.toUpperCase(),
                 picture: body.picture,
-                cnpj: body.cnpj,
-                area: body.area,
-                address: body.address,
-                senders: body.senders,
+                cpf: body.cpf,
+                telephone: body.telephone,
+                password: body.password,
+                mail: body.mail,
                 type: body.type,
                 status: body.status,
               },
@@ -90,7 +91,7 @@ export class CompanyRepository {
             .then((): IMessage => {
               return {
                 status: 201,
-                message: 'Empresa atualizada com sucesso!',
+                message: 'User updated successfully',
               };
             });
         }
@@ -101,7 +102,7 @@ export class CompanyRepository {
   }
 
   uploadImage(_id: string, imageLink: string): Promise<IMessage> {
-    return this.companyModel
+    return this.userModel
       .findOne({ _id: _id })
       .then((existingCompany) => {
         if (!existingCompany) {
@@ -110,7 +111,7 @@ export class CompanyRepository {
             message: 'Empresa não existe, por favor verificar.',
           };
         } else {
-          return this.companyModel
+          return this.userModel
             .updateOne({ _id: _id }, { picture: imageLink })
             .then((): IMessage => {
               return {
@@ -125,24 +126,22 @@ export class CompanyRepository {
       });
   }
 
-  deleteCompany(_id: string): Promise<IMessage> {
-    return this.companyModel
+  deleteUser(_id: string): Promise<IMessage> {
+    return this.userModel
       .findOne({ _id: _id })
-      .then((existingCompany) => {
-        if (!existingCompany) {
+      .then((existingUser) => {
+        if (!existingUser) {
           return {
             status: 404,
-            message: 'Empresa não existe, por favor verificar.',
+            message: 'Usuário não existe, por favor verificar.',
           };
         } else {
-          return this.companyModel
-            .deleteOne({ _id: _id })
-            .then((): IMessage => {
-              return {
-                status: 201,
-                message: 'Empresa excluida com sucesso!',
-              };
-            });
+          return this.userModel.deleteOne({ _id: _id }).then((): IMessage => {
+            return {
+              status: 201,
+              message: 'User deleted successfully',
+            };
+          });
         }
       })
       .catch((error) => {

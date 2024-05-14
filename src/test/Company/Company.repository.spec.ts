@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { CompanyRepository } from '../../repository/Company.repository';
 import { IMessage } from '../../interface/Message.interface';
-import { Company } from '../../model/Company.model';
 
 describe('CompanyRepository', () => {
   let repository: CompanyRepository;
@@ -33,6 +32,7 @@ describe('CompanyRepository', () => {
     const company = {
       name: 'Example Company',
       cnpj: '123456789012345678',
+      picture: '',
       area: 'Example Area',
       address: {
         cep: '123456789',
@@ -56,6 +56,7 @@ describe('CompanyRepository', () => {
     expect(mockCompanyModel.findOne).toBeCalledWith({ cnpj: company.cnpj });
     expect(mockCompanyModel.create).toBeCalledWith({
       name: company.name.toUpperCase(),
+      picture: company.picture,
       cnpj: company.cnpj,
       area: company.area,
       address: company.address,
