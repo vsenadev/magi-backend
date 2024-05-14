@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
@@ -9,7 +10,8 @@ import {
 import { LockStatusService } from '../service/LockStatus.service';
 import { IMessage } from '../interface/Message.interface';
 import {
-  ILockStatus
+  ILockStatus,
+  ILockStatusWithStatusCode,
 } from '../interface/LockStatus.interface';
 
 @Controller('api/lockstatus')
@@ -19,6 +21,11 @@ export class LockStatusController{
   @Post('')
   createLockStatus(@Body() body: ILockStatus): Promise<IMessage> {
     return this.service.createLockStatus(body);
+  }
+
+  @Get('')
+  getAllLockStatus(): Promise<ILockStatusWithStatusCode> {
+    return this.service.getAllLockStatus();
   }
 
   @Put('/code/:code')

@@ -3,3 +3,8 @@ export interface ILockStatus {
     code?: number;
     description: string;
   }
+
+export interface ILockStatusWithStatusCode {
+  status: number;
+  LockStatus: ILockStatus[];
+}
