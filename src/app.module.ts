@@ -8,6 +8,7 @@ import { LockStatusModule } from './modules/LockStatus.module';
 import { DeliveryModule } from './modules/Delivery.module';
 import { CompanyModule } from './modules/Company.module';
 import { UserModule } from './modules/User.module';
+import { AuthModule } from './modules/Auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserModule } from './modules/User.module';
     DeliveryModule,
     CompanyModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
