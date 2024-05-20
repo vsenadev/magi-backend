@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../test-utils';
 import { LockStatusService } from '../../service/LockStatus.service';
 import { LockStatusRepository } from '../../repository/LockStatus.repository';
 import {
@@ -7,6 +6,7 @@ import {
   ILockStatusWithStatusCode,
 } from '../../interface/LockStatus.interface';
 import { IMessage } from '../../interface/Message.interface';
+import { TestResult, printResults } from '../../utils/test-utils';
 
 describe('LockStatusService', () => {
   let service: LockStatusService;
