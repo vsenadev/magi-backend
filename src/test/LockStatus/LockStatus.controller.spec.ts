@@ -3,7 +3,7 @@ import { TestResult, printResults } from '../../utils/test-utils';
 import { LockStatusService } from '../../service/LockStatus.service';
 import { LockStatusController } from '../../controller/LockStatus.controller';
 import { IMessage } from '../../interface/Message.interface';
-import { ILockStatus } from '../../interface/LockStatus.interface';
+import { ILockStatus, ILockStatusWithStatusCode } from '../../interface/LockStatus.interface';
 
 describe('LockStatusController', () => {
   let controller: LockStatusController;
@@ -14,6 +14,7 @@ describe('LockStatusController', () => {
     createLockStatus: jest.fn(),
     alterLockStatus: jest.fn(),
     deleteLockStatus: jest.fn(),
+    getAllLockStatus: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -74,5 +75,20 @@ describe('LockStatusController', () => {
       route: 'DELETE /api/lockstatus/code/:code',
       status: 'Passed',
     });
+  });
+
+  it('should get all lock status', async () => {
+    const lockStatus: ILockStatusWithStatusCode = {
+      status: 200,
+      LockStatus: [{ code: 123, description: 'teste' }],
+    };
+
+
+    mockService.getAllLockStatus.mockResolvedValue(lockStatus);
+
+    const result = await controller.getAllLockStatus();
+
+    expect(result).toEqual(lockStatus);
+    results.push({ route: 'GET /api/lockstatus', status: 'Passed' });
   });
 });

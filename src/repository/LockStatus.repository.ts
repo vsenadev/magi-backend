@@ -6,13 +6,14 @@ import { LockStatusModelName } from '../schema/LockStatus.schema';
 import { IMessage } from '../interface/Message.interface';
 import {
   ILockStatus,
+  ILockStatusWithStatusCode,
 } from '../interface/LockStatus.interface';
 
 @Injectable()
 export class LockStatusRepository {
   constructor(
     @InjectModel(LockStatusModelName)
-    private readonly lockStatusModel: Model<LockStatus>,
+    private readonly lockStatusModel: Model<ILockStatus>,
   ) {}
 
   createLockStatus(body: ILockStatus): Promise<IMessage> {
@@ -45,6 +46,17 @@ export class LockStatusRepository {
       })
       .catch((error) => {
         throw new Error(error);
+      });
+  }
+
+  getAllLockStatus(): Promise<ILockStatusWithStatusCode> {
+    return this.lockStatusModel
+      .find({}, { _id: 0, __v: 0 })
+      .then((locksStatus: ILockStatus[]) => {
+        return {
+          status: 200,
+          LockStatus: locksStatus,
+        };
       });
   }
 

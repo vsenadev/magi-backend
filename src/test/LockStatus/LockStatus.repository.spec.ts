@@ -5,7 +5,7 @@ import { TestResult, printResults } from '../../utils/test-utils';
 import { LockStatusRepository } from '../../repository/LockStatus.repository';
 import { LockStatus } from '../../model/LockStatus.model';
 import { IMessage } from '../../interface/Message.interface';
-import { ILockStatus } from '../../interface/LockStatus.interface';
+import { ILockStatus, ILockStatusWithStatusCode } from '../../interface/LockStatus.interface';
 
 describe('LockStatusRepository', () => {
   let repository: LockStatusRepository;
@@ -13,6 +13,7 @@ describe('LockStatusRepository', () => {
   const results: TestResult[] = [];
 
   const mockModel = {
+    find: jest.fn(),
     findOne: jest.fn(),
     create: jest.fn(),
     updateOne: jest.fn(),
@@ -65,6 +66,27 @@ describe('LockStatusRepository', () => {
       code: lockStatus.code,
       description: lockStatus.description.toUpperCase(),
     });
+  });
+
+  it('should get all lock statuses', async () => {
+    const lockStatuses: ILockStatus[] = [
+      { code: 1, description: 'teste' },
+    ];
+    const response: ILockStatusWithStatusCode = {
+      status: 200,
+      LockStatus: lockStatuses,
+    };
+
+    mockModel.find.mockResolvedValue(lockStatuses);
+
+    const result = await repository.getAllLockStatus();
+
+    expect(result).toEqual(response);
+    results.push({
+      route: 'Repository: getAllLockStatus',
+      status: 'Passed',
+    });
+    expect(mockModel.find).toHaveBeenCalledWith({}, { _id: 0, __v: 0 });
   });
 
   it('should alter lock status', async () => {
