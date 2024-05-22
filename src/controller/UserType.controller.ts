@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Put, UseGuards,
 } from '@nestjs/common';
 import { IMessage } from '../interface/Message.interface';
 import {
@@ -13,6 +13,7 @@ import {
   IUserTypeWithStatusCode,
 } from '../interface/UserType.interface';
 import { UserTypeService } from '../service/UserType.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('api/usertype')
 export class UserTypeController {
@@ -24,6 +25,7 @@ export class UserTypeController {
   }
 
   @Get('')
+  // @UseGuards(AuthGuard('jwt'))
   getAllUserType(): Promise<IUserTypeWithStatusCode> {
     return this.service.getAllUserType();
   }
