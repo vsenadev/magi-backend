@@ -9,6 +9,7 @@ import { DeliveryModule } from './modules/Delivery.module';
 import { CompanyModule } from './modules/Company.module';
 import { UserModule } from './modules/User.module';
 import { AuthModule } from './modules/Auth.module';
+import { MqttModule } from './modules/Mqtt.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './modules/Auth.module';
     CompanyModule,
     UserModule,
     AuthModule,
+    MqttModule,
   ],
   controllers: [],
   providers: [],
