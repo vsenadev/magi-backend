@@ -36,7 +36,7 @@ export class AccountStatusRepository {
               code: body.code,
               description: body.description.toUpperCase(),
             })
-            .then(() => {
+            .then((): IMessage => {
               return {
                 status: 201,
                 message: 'Status da conta criado com sucesso!',
@@ -79,7 +79,7 @@ export class AccountStatusRepository {
                 description: body.description.toUpperCase(),
               },
             )
-            .then(() => {
+            .then((): IMessage => {
               return {
                 status: 201,
                 message: 'Status da conta atualizado com sucesso!',
@@ -102,12 +102,14 @@ export class AccountStatusRepository {
             message: 'Status da conta não existe, por favor verificar.',
           };
         } else {
-          return this.accountStatusModel.deleteOne({ code: code }).then(() => {
-            return {
-              status: 201,
-              message: 'Status da conta excluido com sucesso!',
-            };
-          });
+          return this.accountStatusModel
+            .deleteOne({ code: code })
+            .then((): IMessage => {
+              return {
+                status: 201,
+                message: 'Status da conta excluido com sucesso!',
+              };
+            });
         }
       })
       .catch((error) => {

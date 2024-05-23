@@ -1,8 +1,7 @@
-// src/account-status/account-status.repository.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TestResult, printResults } from '../test-utils';
+import { TestResult, printResults } from '../../utils/test-utils';
 import { AccountStatusRepository } from '../../repository/AccountStatus.repository';
 import { AccountStatus } from '../../model/AccountStatus.model';
 import {
@@ -92,7 +91,10 @@ describe('AccountStatusRepository', () => {
 
   it('should alter account status', async () => {
     const accountStatus: IAccountStatus = { code: 1, description: 'Inactive' };
-    const message: IMessage = { status: 201, message: 'Status da conta atualizado com sucesso!' };
+    const message: IMessage = {
+      status: 201,
+      message: 'Status da conta atualizado com sucesso!',
+    };
 
     mockModel.findOne.mockResolvedValue(accountStatus);
     mockModel.updateOne.mockResolvedValue(message);
