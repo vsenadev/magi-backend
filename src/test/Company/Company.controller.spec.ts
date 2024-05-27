@@ -4,7 +4,7 @@ import { CompanyController } from '../../controller/Company.controller';
 import { CompanyService } from '../../service/Company.service';
 import {
   ICompany,
-  ICompanyWithStatusCode
+  ICompanyWithStatusCode,
 } from '../../interface/Company.interface';
 import { IMessage } from '../../interface/Message.interface';
 

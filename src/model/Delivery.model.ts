@@ -1,5 +1,9 @@
 import { Document } from 'mongoose';
-import { ISender, IExpectedRoute, ITracedRoute } from 'src/interface/Delivery.interface';
+import {
+  ISender,
+  IExpectedRoute,
+  ITracedRoute,
+} from 'src/interface/Delivery.interface';
 import { IProductWithID } from 'src/interface/Product.interface';
 
 export interface Delivery extends Document {

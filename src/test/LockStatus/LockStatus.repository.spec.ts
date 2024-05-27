@@ -5,7 +5,10 @@ import { TestResult, printResults } from '../../utils/test-utils';
 import { LockStatusRepository } from '../../repository/LockStatus.repository';
 import { LockStatus } from '../../model/LockStatus.model';
 import { IMessage } from '../../interface/Message.interface';
-import { ILockStatus, ILockStatusWithStatusCode } from '../../interface/LockStatus.interface';
+import {
+  ILockStatus,
+  ILockStatusWithStatusCode,
+} from '../../interface/LockStatus.interface';
 
 describe('LockStatusRepository', () => {
   let repository: LockStatusRepository;
@@ -69,9 +72,7 @@ describe('LockStatusRepository', () => {
   });
 
   it('should get all lock statuses', async () => {
-    const lockStatuses: ILockStatus[] = [
-      { code: 1, description: 'teste' },
-    ];
+    const lockStatuses: ILockStatus[] = [{ code: 1, description: 'teste' }];
     const response: ILockStatusWithStatusCode = {
       status: 200,
       LockStatus: lockStatuses,

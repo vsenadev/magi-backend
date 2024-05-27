@@ -81,7 +81,7 @@ export class ProductRepository {
               length: body.length,
               width: body.width,
               height: body.height,
-              idEmpresa: body.idEmpresa
+              idEmpresa: body.idEmpresa,
             },
           ).then(() => {
             return {

@@ -10,7 +10,7 @@ import { errorMessage } from '../utils/error';
 
 @Injectable()
 export class AccountStatusService {
-  constructor(private readonly repository: AccountStatusRepository) { }
+  constructor(private readonly repository: AccountStatusRepository) {}
 
   createAccountStatus(body: IAccountStatus): Promise<IMessage> {
     return new Promise((resolve, reject) => {

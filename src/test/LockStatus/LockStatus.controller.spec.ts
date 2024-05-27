@@ -3,7 +3,10 @@ import { TestResult, printResults } from '../../utils/test-utils';
 import { LockStatusService } from '../../service/LockStatus.service';
 import { LockStatusController } from '../../controller/LockStatus.controller';
 import { IMessage } from '../../interface/Message.interface';
-import { ILockStatus, ILockStatusWithStatusCode } from '../../interface/LockStatus.interface';
+import {
+  ILockStatus,
+  ILockStatusWithStatusCode,
+} from '../../interface/LockStatus.interface';
 
 describe('LockStatusController', () => {
   let controller: LockStatusController;
@@ -82,7 +85,6 @@ describe('LockStatusController', () => {
       status: 200,
       LockStatus: [{ code: 123, description: 'teste' }],
     };
-
 
     mockService.getAllLockStatus.mockResolvedValue(lockStatus);
 

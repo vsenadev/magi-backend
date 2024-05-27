@@ -41,24 +41,24 @@ describe('DeliveryController', () => {
 
   it('should create delivery type', async () => {
     const delivery: IDelivery = {
-        _id: '123',
-        name: 'Delivery 1',
-        sender: [{ _id: '1' }],
-        sendDate: '2024-05-10T12:00:00Z',
-        expectedDate: '2024-05-15T12:00:00Z',
-        status: 1,
-        products: [{ _id: '2' }],
-        lockStatus: 1,
-        expectedRoute: [
-          { latitude: 'lat1', longitude: 'long1' },
-          { latitude: 'lat2', longitude: 'long2' }
-        ],
-        tracedRoute: [
-          { latitude: 'lat3', longitude: 'long3' },
-          { latitude: 'lat4', longitude: 'long4' }
-        ],
-        startingAddress: 'Starting Address',
-        destination: 'Destination Address'
+      _id: '123',
+      name: 'Delivery 1',
+      sender: [{ _id: '1' }],
+      sendDate: '2024-05-10T12:00:00Z',
+      expectedDate: '2024-05-15T12:00:00Z',
+      status: 1,
+      products: [{ _id: '2' }],
+      lockStatus: 1,
+      expectedRoute: [
+        { latitude: 'lat1', longitude: 'long1' },
+        { latitude: 'lat2', longitude: 'long2' },
+      ],
+      tracedRoute: [
+        { latitude: 'lat3', longitude: 'long3' },
+        { latitude: 'lat4', longitude: 'long4' },
+      ],
+      startingAddress: 'Starting Address',
+      destination: 'Destination Address',
     };
     const message: IMessage = { status: 201, message: 'Success' };
 
@@ -75,24 +75,24 @@ describe('DeliveryController', () => {
       status: 200,
       deliveries: [
         {
-            _id: '123',
-            name: 'Delivery 1',
-            sender: [{ _id: '1' }],
-            sendDate: '2024-05-10T12:00:00Z',
-            expectedDate: '2024-05-15T12:00:00Z',
-            status: 1,
-            products: [{ _id: '2' }],
-            lockStatus: 1,
-            expectedRoute: [
-              { latitude: 'lat1', longitude: 'long1' },
-              { latitude: 'lat2', longitude: 'long2' }
-            ],
-            tracedRoute: [
-              { latitude: 'lat3', longitude: 'long3' },
-              { latitude: 'lat4', longitude: 'long4' }
-            ],
-            startingAddress: 'Starting Address',
-            destination: 'Destination Address'
+          _id: '123',
+          name: 'Delivery 1',
+          sender: [{ _id: '1' }],
+          sendDate: '2024-05-10T12:00:00Z',
+          expectedDate: '2024-05-15T12:00:00Z',
+          status: 1,
+          products: [{ _id: '2' }],
+          lockStatus: 1,
+          expectedRoute: [
+            { latitude: 'lat1', longitude: 'long1' },
+            { latitude: 'lat2', longitude: 'long2' },
+          ],
+          tracedRoute: [
+            { latitude: 'lat3', longitude: 'long3' },
+            { latitude: 'lat4', longitude: 'long4' },
+          ],
+          startingAddress: 'Starting Address',
+          destination: 'Destination Address',
         },
       ],
     };
@@ -107,24 +107,24 @@ describe('DeliveryController', () => {
 
   it('should alter delivery type', async () => {
     const delivery: IDelivery = {
-        _id: '123',
-        name: 'Delivery 1',
-        sender: [{ _id: '1' }],
-        sendDate: '2024-05-10T12:00:00Z',
-        expectedDate: '2024-05-15T12:00:00Z',
-        status: 1,
-        products: [{ _id: '2' }],
-        lockStatus: 1,
-        expectedRoute: [
-          { latitude: 'lat1', longitude: 'long1' },
-          { latitude: 'lat2', longitude: 'long2' }
-        ],
-        tracedRoute: [
-          { latitude: 'lat3', longitude: 'long3' },
-          { latitude: 'lat4', longitude: 'long4' }
-        ],
-        startingAddress: 'Starting Address',
-        destination: 'Destination Address'
+      _id: '123',
+      name: 'Delivery 1',
+      sender: [{ _id: '1' }],
+      sendDate: '2024-05-10T12:00:00Z',
+      expectedDate: '2024-05-15T12:00:00Z',
+      status: 1,
+      products: [{ _id: '2' }],
+      lockStatus: 1,
+      expectedRoute: [
+        { latitude: 'lat1', longitude: 'long1' },
+        { latitude: 'lat2', longitude: 'long2' },
+      ],
+      tracedRoute: [
+        { latitude: 'lat3', longitude: 'long3' },
+        { latitude: 'lat4', longitude: 'long4' },
+      ],
+      startingAddress: 'Starting Address',
+      destination: 'Destination Address',
     };
     const message: IMessage = { status: 201, message: 'Updated' };
 

@@ -1,5 +1,5 @@
 export interface IUser {
-  _id?: string;
+  _id?: string | unknown;
   name: string;
   picture?: string;
   id_company: string;
