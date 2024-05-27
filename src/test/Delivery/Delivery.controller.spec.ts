@@ -18,6 +18,8 @@ describe('DeliveryController', () => {
     getAllDeliveries: jest.fn(),
     alterDelivery: jest.fn(),
     deleteDelivery: jest.fn(),
+    getExpectedRoute: jest.fn(),
+    saveTrackedRoute: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -152,4 +154,38 @@ describe('DeliveryController', () => {
       status: 'Passed',
     });
   });
+
+  it('should get expected route for a delivery', async () => {
+    const expectedRoute = [
+      { latitude: 'lat1', longitude: 'long1' },
+      { latitude: 'lat2', longitude: 'long2' }
+    ];
+    const response = { status: 200, expectedRoute: expectedRoute };
+  
+    mockService.getExpectedRoute.mockResolvedValue(response);
+  
+    const result = await controller.getExpectedRoute('123');
+  
+    expect(result).toEqual(response);
+    results.push({
+      route: 'GET /api/delivery/:id/expected-route',
+      status: 'Passed',
+    });
+  });
+  
+  it('should save tracked route for a delivery', async () => {
+    const trackedRoute = '[{"latitude":"lat3","longitude":"long3"},{"latitude":"lat4","longitude":"long4"}]';
+    const message: IMessage = { status: 201, message: 'Tracked route saved' };
+  
+    mockService.saveTrackedRoute.mockResolvedValue(message);
+  
+    const result = await controller.saveTrackedRoute('123', trackedRoute);
+  
+    expect(result).toEqual(message);
+    results.push({
+      route: 'POST /api/delivery/:id/track-route',
+      status: 'Passed',
+    });
+  });
+  
 });

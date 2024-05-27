@@ -18,6 +18,8 @@ describe('DeliveryService', () => {
     getAllDeliveries: jest.fn(),
     alterDelivery: jest.fn(),
     deleteDelivery: jest.fn(),
+    getExpectedRouteById: jest.fn(),
+    saveTrackedRouteById: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -137,4 +139,33 @@ describe('DeliveryService', () => {
     expect(result).toEqual(message);
     results.push({ route: 'Service: deleteDelivery', status: 'Passed' });
   });
+
+  it('should get expected route for a delivery', async () => {
+    const id = '1';
+    const expectedRoute = { status: 200, expectedRoute: 'Expected Route' };
+    
+    mockRepository.getExpectedRouteById.mockResolvedValue(expectedRoute);
+    
+    const result = await service.getExpectedRoute(id);
+    
+    expect(result).toEqual(expectedRoute);
+    results.push({ route: 'Service: getExpectedRoute', status: 'Passed' });
+  });
+  
+  it('should save tracked route for a delivery', async () => {
+    const id = '1';
+    const trackedRoute = 'Tracked Route';
+    const message: IMessage = {
+      status: 201,
+      message: 'Tracked route saved successfully',
+    };
+  
+    mockRepository.saveTrackedRouteById.mockResolvedValue(message);
+  
+    const result = await service.saveTrackedRoute(id, trackedRoute);
+  
+    expect(result).toEqual(message);
+    results.push({ route: 'Service: saveTrackedRoute', status: 'Passed' });
+  });
+  
 });
