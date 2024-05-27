@@ -16,10 +16,10 @@ export class DeliveryRepository {
     private readonly deliveryModel: Model<Delivery>,
   ) {}
 
-  // Método para criar uma nova entrega
   createDelivery(body: IDelivery): Promise<IMessage> {
     return this.deliveryModel
       .findOne({ _id: body._id })
+    return this.DeliveryModel.findOne({ _id: body._id })
       .then((existingDelivery) => {
         if (existingDelivery) {
           return {
@@ -47,6 +47,24 @@ export class DeliveryRepository {
                 message: 'Entrega criada com sucesso!',
               };
             });
+          return this.DeliveryModel.create({
+            name: body.name.toUpperCase(),
+            sender: body.sender,
+            sendDate: body.sendDate,
+            expectedDate: body.expectedDate,
+            status: body.status,
+            products: body.products,
+            lockStatus: body.lockStatus,
+            expectedRoute: body.expectedRoute,
+            tracedRoute: body.tracedRoute,
+            startingAddress: body.startingAddress,
+            destination: body.destination,
+          }).then((): IMessage => {
+            return {
+              status: 201,
+              message: 'Entrega criada com sucesso!',
+            };
+          });
         }
       })
       .catch((error) => {
@@ -54,22 +72,24 @@ export class DeliveryRepository {
       });
   }
 
-  // Método para obter todas as entregas
   getAllDeliveries(): Promise<IDeliveryWithStatusCode> {
     return this.deliveryModel
       .find({}, { _id: 0, __v: 0 })
       .then((deliveries: IDelivery[]) => {
+    return this.DeliveryModel.find({}, { _id: 0, __v: 0 }).then(
+      (deliveries: IDelivery[]) => {
         return {
           status: 200,
           deliveries: deliveries,
         };
-      });
+      },
+    );
   }
 
-  // Método para alterar uma entrega existente
   alterDelivery(_id: string, body: IDelivery): Promise<IMessage> {
     return this.deliveryModel
       .findOne({ _id: _id })
+    return this.DeliveryModel.findOne({ _id: _id })
       .then((existingDelivery) => {
         if (!existingDelivery) {
           return {
@@ -102,6 +122,29 @@ export class DeliveryRepository {
                 message: 'Entrega atualizada com sucesso!',
               };
             });
+          return this.DeliveryModel.updateOne(
+            {
+              _id: _id,
+            },
+            {
+              name: body.name.toUpperCase(),
+              sender: body.sender,
+              sendDate: body.sendDate,
+              expectedDate: body.expectedDate,
+              status: body.status,
+              products: body.products,
+              lockStatus: body.lockStatus,
+              expectedRoute: body.expectedRoute,
+              tracedRoute: body.tracedRoute,
+              startingAddress: body.startingAddress,
+              destination: body.destination,
+            },
+          ).then((): IMessage => {
+            return {
+              status: 201,
+              message: 'Entrega atualizada com sucesso!',
+            };
+          });
         }
       })
       .catch((error) => {
@@ -109,10 +152,10 @@ export class DeliveryRepository {
       });
   }
 
-  // Método para excluir uma entrega existente
   deleteDelivery(_id: string): Promise<IMessage> {
     return this.deliveryModel
       .findOne({ _id: _id })
+    return this.DeliveryModel.findOne({ _id: _id })
       .then((existingDelivery) => {
         if (!existingDelivery) {
           return {
@@ -123,18 +166,21 @@ export class DeliveryRepository {
           return this.deliveryModel
             .deleteOne({ _id: _id })
             .then((): IMessage => {
+          return this.DeliveryModel.deleteOne({ _id: _id }).then(
+            (): IMessage => {
               return {
                 status: 201,
                 message: 'Entrega excluída com sucesso!',
               };
-            });
+            },
+          );
         }
       })
       .catch((error) => {
         throw new Error(error);
       });
   }
-
+      
   getExpectedRouteById(
     id: string,
   ): Promise<{ status: number; expectedRoute: string }> {

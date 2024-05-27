@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   Post,
-  Put, UseGuards,
+  Put,
+  UseGuards,
 } from '@nestjs/common';
 import { IMessage } from '../interface/Message.interface';
 import {

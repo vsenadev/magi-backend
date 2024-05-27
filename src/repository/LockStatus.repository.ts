@@ -13,7 +13,7 @@ import {
 export class LockStatusRepository {
   constructor(
     @InjectModel(LockStatusModelName)
-    private readonly lockStatusModel: Model<ILockStatus>,
+    private readonly lockStatusModel: Model<LockStatus>,
   ) {}
 
   createLockStatus(body: ILockStatus): Promise<IMessage> {

@@ -92,38 +92,4 @@ export class DeliveryService {
         });
     });
   }
-
-  getExpectedRoute(
-    id: string,
-  ): Promise<{ status: number; expectedRoute: string }> {
-    return new Promise((resolve, reject) => {
-      this.repository
-        .getExpectedRouteById(id)
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((error) => {
-          reject({
-            status: 500,
-            message: error.message,
-          });
-        });
-    });
-  }
-
-  saveTrackedRoute(id: string, trackedRoute: string): Promise<IMessage> {
-    return new Promise((resolve, reject) => {
-      this.repository
-        .saveTrackedRouteById(id, trackedRoute)
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((error) => {
-          reject({
-            status: 500,
-            message: error.message,
-          });
-        });
-    });
-  }
 }

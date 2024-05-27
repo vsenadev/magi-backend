@@ -40,17 +40,4 @@ export class DeliveryController {
   deleteDeliveryType(@Param('id') id: string): Promise<IMessage> {
     return this.service.deleteDelivery(id);
   }
-
-  @Get(':id/expected-route')
-  getExpectedRoute(@Param('id') id: string) {
-    return this.service.getExpectedRoute(id);
-  }
-
-  @Post(':id/track-route')
-  saveTrackedRoute(
-    @Param('id') id: string,
-    @Body('trackedRoute') trackedRoute: string,
-  ): Promise<IMessage> {
-    return this.service.saveTrackedRoute(id, trackedRoute);
-  }
 }

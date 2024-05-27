@@ -8,7 +8,6 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Configuração de CORS
   app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,7 +26,6 @@ async function bootstrap() {
     next();
   });
 
-  // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('The API description')
