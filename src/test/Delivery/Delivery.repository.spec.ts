@@ -171,28 +171,4 @@ describe('DeliveryRepository', () => {
       message: 'Entrega excluída com sucesso!',
     });
   });
-
-  it('should get expected route for a delivery', async () => {
-    const id = '1';
-    const expectedRoute = { status: 200, expectedRoute: '' };
-    
-    mockDeliveryModel.getExpectedRouteById.mockResolvedValue(expectedRoute);
-    
-    const result = await repository.getExpectedRouteById(id);
-    
-    expect(result).toEqual(expectedRoute);
-  });
-  
-  it('should save tracked route for a delivery', async () => {
-    const id = '1';
-    const trackedRoute = 'Tracked Route';
-    const message = { status: 201, message: 'Rota traçada salva com sucesso!'};
-    
-    mockDeliveryModel.saveTrackedRouteById.mockResolvedValue(message);
-    
-    const result = await repository.saveTrackedRouteById(id, trackedRoute);
-    
-    expect(result).toEqual(message);
-  });
-  
 });

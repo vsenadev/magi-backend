@@ -6,7 +6,9 @@ import { DeliveryModelName } from '../schema/Delivery.schema';
 import { Delivery } from '../model/Delivery.model';
 import {
   IDelivery,
-  IDeliveryWithStatusCode, IExpectedRoute, ITracedRoute,
+  IDeliveryWithStatusCode,
+  IExpectedRoute,
+  ITracedRoute,
 } from '../interface/Delivery.interface';
 
 @Injectable()
