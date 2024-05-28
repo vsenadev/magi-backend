@@ -13,6 +13,8 @@ describe('DeliveryRepository', () => {
     find: jest.fn(),
     updateOne: jest.fn(),
     deleteOne: jest.fn(),
+    getExpectedRouteById: jest.fn(),
+    saveTrackedRouteById: jest.fn(),
   };
 
   beforeEach(async () => {

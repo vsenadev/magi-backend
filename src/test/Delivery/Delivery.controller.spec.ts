@@ -18,6 +18,8 @@ describe('DeliveryController', () => {
     getAllDeliveries: jest.fn(),
     alterDelivery: jest.fn(),
     deleteDelivery: jest.fn(),
+    getExpectedRoute: jest.fn(),
+    saveTrackedRoute: jest.fn(),
   };
 
   beforeEach(async () => {
