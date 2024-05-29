@@ -10,47 +10,37 @@ import {
   IExpectedRoute,
   ITracedRoute,
 } from '../interface/Delivery.interface';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class DeliveryRepository {
   constructor(
     @InjectModel(DeliveryModelName)
     private readonly deliveryModel: Model<Delivery>,
-  ) {}
+  ) { }
 
-  createDelivery(body: IDelivery): Promise<IMessage> {
+  createDelivery(body: IDelivery): Promise<IMessage> { 
     return this.deliveryModel
-      .findOne({ _id: body._id })
-      .then((existingDelivery) => {
-        if (existingDelivery) {
-          return {
-            status: 409,
-            message: 'Entrega já existe, por favor verificar.',
-          };
-        } else {
-          return this.deliveryModel
-            .create({
-              name: body.name.toUpperCase(),
-              sender: body.sender,
-              sendDate: body.sendDate,
-              expectedDate: body.expectedDate,
-              status: body.status,
-              products: body.products,
-              lockStatus: body.lockStatus,
-              expectedRoute: body.expectedRoute,
-              tracedRoute: body.tracedRoute,
-              startingAddress: body.startingAddress,
-              destination: body.destination,
-            })
-            .then((): IMessage => {
-              return {
-                status: 201,
-                message: 'Entrega criada com sucesso!',
-              };
-            });
-        }
+      .create({
+        _id: uuidv4(),
+        name: body.name.toUpperCase(),
+        sender: body.sender,
+        sendDate: body.sendDate,
+        expectedDate: body.expectedDate,
+        status: body.status,
+        products: body.products,
+        lockStatus: body.lockStatus,
+        expectedRoute: body.expectedRoute,
+        tracedRoute: body.tracedRoute,
+        startingAddress: body.startingAddress,
+        destination: body.destination,
       })
-      .catch((error) => {
+      .then((): IMessage => {
+        return {
+          status: 201,
+          message: 'Entrega criada com sucesso!',
+        };
+      }).catch((error) => {
         throw new Error(error);
       });
   }
@@ -134,12 +124,12 @@ export class DeliveryRepository {
   }
 
   getExpectedRouteById(
-    id: string,
-  ): Promise<{ status: number; expectedRoute: IExpectedRoute[] | unknown }> {
+    _id: string,
+  ): Promise<{ expectedRoute: IExpectedRoute[] | unknown[] }> {
     return this.deliveryModel
       .findOne(
         {
-          _id: id,
+          _id: _id,
         },
         {
           _id: 0,
@@ -153,12 +143,12 @@ export class DeliveryRepository {
           tracedRoute: 0,
           startingAddress: 0,
           destination: 0,
+          __v: 0
         },
       )
       .then((delivery) => {
         return {
-          status: 200,
-          expectedRoute: delivery,
+          expectedRoute: delivery['expectedRoute'],
         };
       })
       .catch((error) => {
@@ -166,7 +156,40 @@ export class DeliveryRepository {
       });
   }
 
-  saveTrackedRouteById(
+  getTracedRouteById(
+    _id: string,
+  ): Promise<{ tracedRoute: ITracedRoute[] | unknown[] }> {
+    return this.deliveryModel
+      .findOne(
+        {
+          _id: _id,
+        },
+        {
+          _id: 0,
+          name: 0,
+          sender: 0,
+          sendDate: 0,
+          expectedDate: 0,
+          status: 0,
+          products: 0,
+          lockStatus: 0,
+          expectedRoute: 0,
+          startingAddress: 0,
+          destination: 0,
+          __v: 0
+        },
+      )
+      .then((delivery) => {
+        return {
+          tracedRoute: delivery['tracedRoute'],
+        };
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  saveTracedRouteById(
     id: string,
     trackedRoute: ITracedRoute,
   ): Promise<IMessage> {

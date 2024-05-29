@@ -2,14 +2,13 @@ import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { connect, MqttClient } from 'mqtt';
 import * as process from 'node:process';
 import { DeliveryRepository } from '../repository/Delivery.repository';
-import { RotaValidatorService } from '../utils/routeValidator';
+import { RotaValidator } from '../utils/routeValidator';
 import { IDelivery } from 'src/interface/Delivery.interface';
 
 @Injectable()
 export class MqttService implements OnModuleInit, OnModuleDestroy {
   private client: MqttClient;
-  private validatorService: RotaValidatorService;
-  private deliveryRepository: DeliveryRepository;
+  constructor(private readonly repository: DeliveryRepository, private readonly validatorService: RotaValidator) { }
 
   onModuleInit() {
     this.connectToMqtt();
@@ -49,30 +48,19 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     });
 
     this.client.on('message', (topic, message) => {
+      const stringMessage = JSON.parse(message.toString())
+      const objectMessage = JSON.parse(stringMessage);
+      this.repository.saveTracedRouteById(objectMessage._id, objectMessage.coordinates).then(() => {
+        const tracedRoute = this.repository.getTracedRouteById(objectMessage._id)
+        this.repository.getExpectedRouteById(objectMessage._id).then((routes) => {
+          console.log(routes['expectedRoute'])
+          this.validatorService.routeValidate(objectMessage.coordinates, routes['expectedRoute'])
+        });
+      })
 
-      console.log(`Received message from ${topic}: ${message.toString()}`);
 
-      // entender como esperar objeto message do tipo IDelivery
 
-      var messageString = message.toString().replace(/(\w+)\s*:/g, '"$1":').trim();
-      let messageObject = JSON.parse(messageString);
 
-      let expectedRoute = messageObject.expectedRoute;
-      let tracedRoute = messageObject.tracedRoute;
-      let lockStatus = messageObject.lockStatus;
-      let status = messageObject.status;
-
-      let objeto: IDelivery;
-      //logica para validar
-      if(!this.validatorService.validarRota(tracedRoute, expectedRoute)){
-        lockStatus = "Ativo"
-        status = "Saiu da rota!"
-      }
-      
-       // logica de enviar pro banco e salvar 
-       //falta ID auto increment
-       //criar a cada requisição? seria a melhor forma?
-       this.deliveryRepository.createDelivery(objeto)
     });
   }
 }

@@ -2,7 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { DeliveryRepository } from '../../repository/Delivery.repository';
 import { IMessage } from '../../interface/Message.interface';
+import { v4 as uuidv4 } from 'uuid';
 import { Delivery } from '../../model/Delivery.model';
+
+// Mock uuidv4
+jest.mock('uuid', () => ({
+  v4: jest.fn(),
+}));
 
 describe('DeliveryRepository', () => {
   let repository: DeliveryRepository;
@@ -57,10 +63,17 @@ describe('DeliveryRepository', () => {
     mockDeliveryModel.findOne.mockResolvedValue(existingDelivery);
     mockDeliveryModel.create.mockResolvedValue({});
 
+    // Configure o mock para uuidv4 para retornar um ID previsível
+    const mockUuid = 'mock-uuid';
+    (uuidv4 as jest.Mock).mockReturnValue(mockUuid);
+
     const result: IMessage = await repository.createDelivery(delivery);
 
-    expect(mockDeliveryModel.findOne).toBeCalledWith({ _id: delivery._id });
-    expect(mockDeliveryModel.create).toBeCalledWith({
+    // Capture os argumentos passados para a função mockada
+    const mockCreateCallArgs = mockDeliveryModel.create.mock.calls[0][0];
+
+    expect(mockCreateCallArgs).toEqual({
+      _id: mockUuid,
       name: delivery.name.toUpperCase(),
       sender: delivery.sender,
       sendDate: delivery.sendDate,

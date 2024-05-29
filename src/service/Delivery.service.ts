@@ -16,7 +16,6 @@ export class DeliveryService {
     return new Promise((resolve, reject) => {
       try {
         DeliveryDto.parse(body);
-
         this.repository
           .createDelivery(body)
           .then((result) => {
