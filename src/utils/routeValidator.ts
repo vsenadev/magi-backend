@@ -13,12 +13,17 @@ export class RotaValidator {
         const distance = this.calculateDistanceBetweenTwoPoints(actualRoute, element);
         if (distance > 500) {
           return false;
+          this.enviarMensagem();
       } else {
           return true;
       }
       });
     } 
     return true;
+  }
+
+  enviarMensagem() {
+    //enviar mensagem
   }
 
   calculateDistanceBetweenTwoPoints(actualRoute, expectedRoute): number {
