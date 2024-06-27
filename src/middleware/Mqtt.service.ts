@@ -8,7 +8,7 @@ import { IDelivery } from 'src/interface/Delivery.interface';
 @Injectable()
 export class MqttService implements OnModuleInit, OnModuleDestroy {
   private client: MqttClient;
-  constructor(private readonly repository: DeliveryRepository, private readonly validatorService: RotaValidator) { }
+  constructor(private readonly repository: DeliveryRepository, private readonly validator: RotaValidator) { }
 
   onModuleInit() {
     this.connectToMqtt();
@@ -50,12 +50,10 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     this.client.on('message', (topic, message) => {
       const stringMessage = JSON.parse(message.toString())
       const objectMessage = JSON.parse(stringMessage);
-      const idDelivery = objectMessage._id
-      const coordinates = objectMessage.coordinates
-      this.repository.saveTracedRouteById(idDelivery, coordinates).then(() => {
-        const tracedRoute = this.repository.getTracedRouteById(idDelivery) //id da rotaEsperada
-        this.repository.getExpectedRouteById(idDelivery).then((routes) => {
-          this.validatorService.routeValidate(coordinates, routes['expectedRoute'])
+      this.repository.saveTracedRouteById(objectMessage._id, objectMessage.coordinates).then(() => {
+        const tracedRoute = this.repository.getTracedRouteById(objectMessage._id) 
+        this.repository.getExpectedRouteById(objectMessage._id).then((routes) => {
+          this.validator.routeValidate(objectMessage.coordinates, routes['expectedRoute'])
         });
       })
 
