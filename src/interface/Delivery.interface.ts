@@ -1,7 +1,7 @@
 import { IProductWithID } from './Product.interface';
 
 export interface IDelivery {
-  _id: string;
+  _id?: string;
   name: string;
   sender: ISender[];
   sendDate: string;
@@ -20,13 +20,13 @@ export interface ISender {
 }
 
 export interface IExpectedRoute {
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface ITracedRoute {
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IDeliveryWithStatusCode {
