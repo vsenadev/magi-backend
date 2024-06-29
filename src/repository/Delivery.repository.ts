@@ -17,9 +17,9 @@ export class DeliveryRepository {
   constructor(
     @InjectModel(DeliveryModelName)
     private readonly deliveryModel: Model<Delivery>,
-  ) { }
+  ) {}
 
-  createDelivery(body: IDelivery): Promise<IMessage> { 
+  createDelivery(body: IDelivery): Promise<IMessage> {
     return this.deliveryModel
       .create({
         _id: uuidv4(),
@@ -40,7 +40,8 @@ export class DeliveryRepository {
           status: 201,
           message: 'Entrega criada com sucesso!',
         };
-      }).catch((error) => {
+      })
+      .catch((error) => {
         throw new Error(error);
       });
   }
@@ -143,7 +144,7 @@ export class DeliveryRepository {
           tracedRoute: 0,
           startingAddress: 0,
           destination: 0,
-          __v: 0
+          __v: 0,
         },
       )
       .then((delivery) => {
@@ -176,7 +177,7 @@ export class DeliveryRepository {
           expectedRoute: 0,
           startingAddress: 0,
           destination: 0,
-          __v: 0
+          __v: 0,
         },
       )
       .then((delivery) => {

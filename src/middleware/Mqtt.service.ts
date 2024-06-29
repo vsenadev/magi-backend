@@ -8,7 +8,10 @@ import { IDelivery } from 'src/interface/Delivery.interface';
 @Injectable()
 export class MqttService implements OnModuleInit, OnModuleDestroy {
   private client: MqttClient;
-  constructor(private readonly repository: DeliveryRepository, private readonly validator: RotaValidator) { }
+  constructor(
+    private readonly repository: DeliveryRepository,
+    private readonly validator: RotaValidator,
+  ) {}
 
   onModuleInit() {
     this.connectToMqtt();
@@ -48,18 +51,23 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
     });
 
     this.client.on('message', (topic, message) => {
-      const stringMessage = JSON.parse(message.toString())
+      const stringMessage = JSON.parse(message.toString());
       const objectMessage = JSON.parse(stringMessage);
-      this.repository.saveTracedRouteById(objectMessage._id, objectMessage.coordinates).then(() => {
-        const tracedRoute = this.repository.getTracedRouteById(objectMessage._id) 
-        this.repository.getExpectedRouteById(objectMessage._id).then((routes) => {
-          this.validator.routeValidate(objectMessage.coordinates, routes['expectedRoute'])
+      this.repository
+        .saveTracedRouteById(objectMessage._id, objectMessage.coordinates)
+        .then(() => {
+          const tracedRoute = this.repository.getTracedRouteById(
+            objectMessage._id,
+          );
+          this.repository
+            .getExpectedRouteById(objectMessage._id)
+            .then((routes) => {
+              this.validator.routeValidate(
+                objectMessage.coordinates,
+                routes['expectedRoute'],
+              );
+            });
         });
-      })
-
-
-
-
     });
   }
 }

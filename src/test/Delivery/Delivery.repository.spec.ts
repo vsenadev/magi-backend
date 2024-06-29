@@ -3,7 +3,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { DeliveryRepository } from '../../repository/Delivery.repository';
 import { IMessage } from '../../interface/Message.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { Delivery } from '../../model/Delivery.model';
+import { IDelivery } from '../../interface/Delivery.interface';
 
 // Mock uuidv4
 jest.mock('uuid', () => ({
@@ -38,7 +38,7 @@ describe('DeliveryRepository', () => {
   });
 
   it('should create a delivery', async () => {
-    const delivery = {
+    const delivery: IDelivery = {
       _id: '123',
       name: 'Delivery 1',
       sender: [{ _id: '1' }],
@@ -48,12 +48,12 @@ describe('DeliveryRepository', () => {
       products: [{ _id: '2' }],
       lockStatus: 1,
       expectedRoute: [
-        { latitude: 'lat1', longitude: 'long1' },
-        { latitude: 'lat2', longitude: 'long2' },
+        { latitude: 7447, longitude: 7544 },
+        { latitude: 7678, longitude: 7986 },
       ],
       tracedRoute: [
-        { latitude: 'lat3', longitude: 'long3' },
-        { latitude: 'lat4', longitude: 'long4' },
+        { latitude: 9372, longitude: 7030 },
+        { latitude: 8642, longitude: 7093 },
       ],
       startingAddress: 'Starting Address',
       destination: 'Destination Address',
@@ -118,7 +118,7 @@ describe('DeliveryRepository', () => {
 
   it('should alter a delivery', async () => {
     const _id = '1';
-    const delivery = {
+    const delivery: IDelivery = {
       _id: '123',
       name: 'Delivery 1',
       sender: [{ _id: '1' }],
@@ -128,12 +128,12 @@ describe('DeliveryRepository', () => {
       products: [{ _id: '2' }],
       lockStatus: 1,
       expectedRoute: [
-        { latitude: 'lat1', longitude: 'long1' },
-        { latitude: 'lat2', longitude: 'long2' },
+        { latitude: 3443, longitude: 84892 },
+        { latitude: 2323, longitude: 3983 },
       ],
       tracedRoute: [
-        { latitude: 'lat3', longitude: 'long3' },
-        { latitude: 'lat4', longitude: 'long4' },
+        { latitude: 3231, longitude: 2928 },
+        { latitude: 8638, longitude: 3982 },
       ],
       startingAddress: 'Starting Address',
       destination: 'Destination Address',
