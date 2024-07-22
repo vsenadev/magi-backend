@@ -3,13 +3,17 @@ import { IMessage } from '../interface/Message.interface';
 import { UserRepository } from '../repository/User.repository';
 import { IUser, IUserWithStatusCode } from '../interface/User.interface';
 import { UserDto } from '../dto/User.dto';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 import { IImage } from '../interface/Image.interface';
 import axios from 'axios';
+import { CompanyRepository } from '../repository/Company.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly repository: UserRepository) {}
+  constructor(
+    private readonly repository: UserRepository,
+    private readonly companyRepository: CompanyRepository,
+  ) {}
 
   createUser(body: IUser): Promise<IMessage> {
     return new Promise((resolve, reject) => {
@@ -19,7 +23,24 @@ export class UserService {
         this.repository
           .createUser(body)
           .then((result) => {
-            resolve(result);
+            if (result && result._id) {
+              this.companyRepository
+                .insertEmployee(body['id_company'], result._id.toString())
+                .then((res) => {
+                  resolve(result);
+                })
+                .catch((error) => {
+                  reject({
+                    status: 500,
+                    message: error.message,
+                  });
+                });
+            } else {
+              reject({
+                status: 500,
+                message: 'Invalid result from createUser',
+              });
+            }
           })
           .catch((error) => {
             reject({

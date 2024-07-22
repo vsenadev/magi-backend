@@ -60,7 +60,7 @@ export class AccountStatusRepository {
       });
   }
 
-  alterAccountStatus(code: number, body: IAccountStatus): Promise<IMessage> {
+  alterAccountStatus(code: number, description: string): Promise<IMessage> {
     return this.accountStatusModel
       .findOne({ code: code })
       .then((existingStatus) => {
@@ -76,7 +76,7 @@ export class AccountStatusRepository {
                 code: code,
               },
               {
-                description: body.description.toUpperCase(),
+                description: description.toUpperCase(),
               },
             )
             .then((): IMessage => {

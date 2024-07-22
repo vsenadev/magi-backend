@@ -6,7 +6,7 @@ import {
   ILockStatusWithStatusCode,
 } from '../interface/LockStatus.interface';
 import { LockStatusDto } from '../dto/LockStatus.dto';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 
 @Injectable()
 export class LockStatusService {

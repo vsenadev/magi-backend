@@ -13,6 +13,7 @@ import { IMessage } from '../interface/Message.interface';
 import {
   ICompany,
   ICompanyWithStatusCode,
+  IPassword,
 } from '../interface/Company.interface';
 import { CompanyService } from '../service/Company.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -22,23 +23,38 @@ export class CompanyController {
   constructor(private readonly service: CompanyService) {}
 
   @Post('')
-  createUserType(@Body() body: ICompany): Promise<IMessage> {
+  createCompany(@Body() body: ICompany): Promise<IMessage> {
     return this.service.createCompany(body);
   }
 
   @Get('')
-  getAllUserType(): Promise<ICompanyWithStatusCode> {
+  getAllCompanies(): Promise<ICompanyWithStatusCode> {
     return this.service.getAllCompanies();
   }
 
   @Put('/id/:_id')
-  alterUserType(
+  alterCompany(
     @Param('_id') _id: string,
     @Body() body: ICompany,
   ): Promise<IMessage> {
     return this.service.alterCompany(_id, body);
   }
 
+  @Put('/password/:_id')
+  alterPassword(
+    @Param('_id') _id: string,
+    @Body() body: IPassword,
+  ): Promise<IMessage> {
+    return this.service.alterPassword(_id, body.password);
+  }
+
+  @Put('/code/:_id')
+  validateCode(
+    @Param('_id') _id: string,
+    @Body() body: IPassword,
+  ): Promise<boolean | IMessage> {
+    return this.service.validateCode(_id, body.password);
+  }
   @Put('/picture/:_id')
   @UseInterceptors(FileInterceptor('image'))
   uploadImage(
@@ -49,7 +65,7 @@ export class CompanyController {
   }
 
   @Delete('/id/:id')
-  deleteUserType(@Param('_id') _id: string): Promise<IMessage> {
+  deleteCompany(@Param('_id') _id: string): Promise<IMessage> {
     return this.service.deleteCompany(_id);
   }
 }

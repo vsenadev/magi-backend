@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { AccountStatusService } from '../../service/AccountStatus.service';
 import { AccountStatusRepository } from '../../repository/AccountStatus.repository';
 import {
@@ -71,7 +71,10 @@ describe('AccountStatusService', () => {
 
     mockRepository.alterAccountStatus.mockResolvedValue(message);
 
-    const result = await service.alterAccountStatus(1, accountStatus);
+    const result = await service.alterAccountStatus(
+      1,
+      accountStatus.description,
+    );
 
     expect(result).toEqual(message);
     results.push({ route: 'Service: alterAccountStatus', status: 'Passed' });

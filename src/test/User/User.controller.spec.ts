@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from '../../controller/User.controller';
 import { UserService } from '../../service/User.service';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { IUser, IUserWithStatusCode } from '../../interface/User.interface';
 import { IMessage } from '../../interface/Message.interface';
 

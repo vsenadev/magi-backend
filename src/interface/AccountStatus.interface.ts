@@ -8,3 +8,7 @@ export interface IAccountStatusWithStatusCode {
   status: number;
   AccountStatus: IAccountStatus[];
 }
+
+export interface IDescription {
+  description: string;
+}

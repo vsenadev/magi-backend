@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { connect, MqttClient } from 'mqtt';
 import * as process from 'node:process';
 import { DeliveryRepository } from '../repository/Delivery.repository';
-import { RotaValidator } from '../utils/routeValidator';
+import { RotaValidator } from '../utils/RouteValidator.utils';
 import { IDelivery } from 'src/interface/Delivery.interface';
 
 @Injectable()

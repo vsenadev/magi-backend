@@ -6,7 +6,7 @@ import {
   IAccountStatus,
 } from '../interface/AccountStatus.interface';
 import { AccountStatusDto } from '../dto/AccountStatus.dto';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 
 @Injectable()
 export class AccountStatusService {
@@ -52,12 +52,11 @@ export class AccountStatusService {
     });
   }
 
-  alterAccountStatus(code: number, body: IAccountStatus): Promise<IMessage> {
+  alterAccountStatus(code: number, description: string): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
-        AccountStatusDto.parse(body);
         this.repository
-          .alterAccountStatus(code, body)
+          .alterAccountStatus(code, description)
           .then((result) => {
             resolve(result);
           })

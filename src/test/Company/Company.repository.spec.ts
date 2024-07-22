@@ -32,6 +32,8 @@ describe('CompanyRepository', () => {
     const company = {
       name: 'Example Company',
       cnpj: '123456789012345678',
+      email: 'empresa@email.com',
+      password: '123456789',
       picture: '',
       area: 'Example Area',
       address: {
@@ -58,6 +60,8 @@ describe('CompanyRepository', () => {
       name: company.name.toUpperCase(),
       picture: company.picture,
       cnpj: company.cnpj,
+      email: company.email,
+      password: company.password,
       area: company.area,
       address: company.address,
       senders: company.senders,
@@ -76,6 +80,8 @@ describe('CompanyRepository', () => {
         name: 'Example Company',
         cnpj: '12345678901234',
         area: 'Example Area',
+        email: 'empresa@email.com',
+        password: '123456789',
         address: {
           cep: '123456789',
           road: 'Example Road',
@@ -102,6 +108,9 @@ describe('CompanyRepository', () => {
     const company = {
       name: 'Updated Company',
       cnpj: '123456789012345678',
+      email: 'empresa@email.com',
+      picture: '',
+      password: '123456789',
       area: 'Updated Area',
       address: {
         cep: '123456789',
@@ -128,6 +137,7 @@ describe('CompanyRepository', () => {
       {
         name: company.name.toUpperCase(),
         cnpj: company.cnpj,
+        picture: company.picture,
         area: company.area,
         address: company.address,
         senders: company.senders,
@@ -156,5 +166,20 @@ describe('CompanyRepository', () => {
       status: 201,
       message: 'Empresa excluida com sucesso!',
     });
+  });
+
+  it('should insert an employee', async () => {
+    const company_id = 'company_id';
+    const employee_id = 'employee_id';
+
+    mockCompanyModel.updateOne.mockResolvedValue({ nModified: 1 });
+
+    const result = await repository.insertEmployee(company_id, employee_id);
+
+    expect(mockCompanyModel.updateOne).toBeCalledWith(
+      { _id: company_id },
+      { $push: { senders: employee_id } },
+    );
+    expect(result).toEqual({ nModified: 1 });
   });
 });

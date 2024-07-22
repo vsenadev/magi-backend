@@ -5,7 +5,9 @@ export const CompanyDto = z.object({
   picture: z.string().optional(),
   name: z.string().min(1).max(100),
   cnpj: z.string().min(18).max(18),
+  password: z.string().min(8).max(60),
   area: z.string().min(3).max(50),
+  email: z.string().email(),
   address: z.object({
     cep: z.string().min(9).max(9),
     road: z.string().min(1).max(200),
@@ -16,7 +18,7 @@ export const CompanyDto = z.object({
   }),
   senders: z.array(
     z.object({
-      id: z.string().uuid().optional(),
+      id: z.string().optional(),
     }),
   ),
   type: z.number().positive(),

@@ -37,8 +37,9 @@ export class UserRepository {
               type: body.type,
               status: body.status,
             })
-            .then((): IMessage => {
+            .then((res): IMessage => {
               return {
+                _id: res._id,
                 status: 201,
                 message: 'User created successfully',
               };

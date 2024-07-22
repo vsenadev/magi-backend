@@ -7,7 +7,7 @@ import {
 import { ProductDto } from '../dto/Product.dto';
 import { IMessage } from 'src/interface/Message.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 
 @Injectable()
 export class ProductService {

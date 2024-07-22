@@ -6,7 +6,7 @@ import {
   IDeliveryWithStatusCode,
 } from '../interface/Delivery.interface';
 import { DeliveryDto } from '../dto/Delivery.dto';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 
 @Injectable()
 export class DeliveryService {

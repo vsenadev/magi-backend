@@ -5,6 +5,8 @@ export interface Company extends Document {
   picture?: string;
   name: string;
   cnpj: string;
+  email: string;
+  password: string;
   area: string;
   address: IAddress;
   senders: ISender[];

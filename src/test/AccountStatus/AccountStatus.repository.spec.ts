@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { AccountStatusRepository } from '../../repository/AccountStatus.repository';
 import { AccountStatus } from '../../model/AccountStatus.model';
 import {
@@ -99,7 +99,10 @@ describe('AccountStatusRepository', () => {
     mockModel.findOne.mockResolvedValue(accountStatus);
     mockModel.updateOne.mockResolvedValue(message);
 
-    const result = await repository.alterAccountStatus(1, accountStatus);
+    const result = await repository.alterAccountStatus(
+      1,
+      accountStatus.description,
+    );
 
     expect(result).toEqual(message);
     results.push({ route: 'Repository: alterAccountStatus', status: 'Passed' });

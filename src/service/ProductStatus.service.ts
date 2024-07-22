@@ -5,7 +5,7 @@ import {
   IProductStatus,
 } from '../interface/ProductStatus.interface';
 import { ProductStatusDto } from '../dto/ProductStatus.dto';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 import { ProductStatusRepository } from '../repository/ProductStatus.repository';
 
 @Injectable()

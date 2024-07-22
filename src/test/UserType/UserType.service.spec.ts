@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { UserTypeService } from '../../service/UserType.service';
-import { UserTypeController } from '../../controller/UserType.controller';
+import { UserTypeRepository } from '../../repository/UsertType.repository';
 import {
   IUserType,
   IUserTypeWithStatusCode,
 } from '../../interface/UserType.interface';
 import { IMessage } from '../../interface/Message.interface';
 
-describe('UserTypeController', () => {
-  let controller: UserTypeController;
+describe('UserTypeService', () => {
   let service: UserTypeService;
+  let repository: UserTypeRepository;
   const results: TestResult[] = [];
 
-  const mockService = {
+  const mockRepository = {
     createUserType: jest.fn(),
     getAllUserType: jest.fn(),
     alterUserType: jest.fn(),
@@ -22,17 +22,17 @@ describe('UserTypeController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserTypeController],
       providers: [
+        UserTypeService,
         {
-          provide: UserTypeService,
-          useValue: mockService,
+          provide: UserTypeRepository,
+          useValue: mockRepository,
         },
       ],
     }).compile();
 
-    controller = module.get<UserTypeController>(UserTypeController);
     service = module.get<UserTypeService>(UserTypeService);
+    repository = module.get<UserTypeRepository>(UserTypeRepository);
   });
 
   afterAll(() => {
@@ -43,12 +43,12 @@ describe('UserTypeController', () => {
     const userType: IUserType = { code: 1, description: 'Admin' };
     const message: IMessage = { status: 201, message: 'Success' };
 
-    mockService.createUserType.mockResolvedValue(message);
+    mockRepository.createUserType.mockResolvedValue(message);
 
-    const result = await controller.createUserType(userType);
+    const result = await service.createUserType(userType);
 
     expect(result).toEqual(message);
-    results.push({ route: 'POST /api/usertype', status: 'Passed' });
+    results.push({ route: 'Service: createUserType', status: 'Passed' });
   });
 
   it('should get all user types', async () => {
@@ -57,40 +57,34 @@ describe('UserTypeController', () => {
       UserType: [{ code: 1, description: 'Admin' }],
     };
 
-    mockService.getAllUserType.mockResolvedValue(response);
+    mockRepository.getAllUserType.mockResolvedValue(response);
 
-    const result = await controller.getAllUserType();
+    const result = await service.getAllUserType();
 
     expect(result).toEqual(response);
-    results.push({ route: 'GET /api/usertype', status: 'Passed' });
+    results.push({ route: 'Service: getAllUserType', status: 'Passed' });
   });
 
   it('should alter user type', async () => {
     const userType: IUserType = { code: 1, description: 'Guest' };
     const message: IMessage = { status: 201, message: 'Updated' };
 
-    mockService.alterUserType.mockResolvedValue(message);
+    mockRepository.alterUserType.mockResolvedValue(message);
 
-    const result = await controller.alterUserType(1, userType);
+    const result = await service.alterUserType(1, userType);
 
     expect(result).toEqual(message);
-    results.push({
-      route: 'PUT /api/usertype/code/:code',
-      status: 'Passed',
-    });
+    results.push({ route: 'Service: alterUserType', status: 'Passed' });
   });
 
   it('should delete user type', async () => {
     const message: IMessage = { status: 201, message: 'Deleted' };
 
-    mockService.deleteUserType.mockResolvedValue(message);
+    mockRepository.deleteUserType.mockResolvedValue(message);
 
-    const result = await controller.deleteUserType(1);
+    const result = await service.deleteUserType(1);
 
     expect(result).toEqual(message);
-    results.push({
-      route: 'DELETE /api/usertype/code/:code',
-      status: 'Passed',
-    });
+    results.push({ route: 'Service: deleteUserType', status: 'Passed' });
   });
 });

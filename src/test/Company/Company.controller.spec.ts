@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { CompanyController } from '../../controller/Company.controller';
 import { CompanyService } from '../../service/Company.service';
 import {
@@ -41,6 +41,8 @@ describe('CompanyController', () => {
 
   it('should create a company', async () => {
     const company: ICompany = {
+      email: 'empresa@email.com',
+      password: '1234',
       name: 'Example Company',
       cnpj: '123456789012345678',
       area: 'Example Area',
@@ -60,7 +62,7 @@ describe('CompanyController', () => {
 
     mockService.createCompany.mockResolvedValue(message);
 
-    const result = await controller.createUserType(company);
+    const result = await controller.createCompany(company);
 
     expect(result).toEqual(message);
     results.push({ route: 'POST /api/company', status: 'Passed' });
@@ -85,13 +87,15 @@ describe('CompanyController', () => {
           senders: [],
           type: 1,
           status: 1,
+          email: 'empresa@email.com',
+          password: '1234',
         },
       ],
     };
 
     mockService.getAllCompanies.mockResolvedValue(response);
 
-    const result = await controller.getAllUserType();
+    const result = await controller.getAllCompanies();
 
     expect(result).toEqual(response);
     results.push({ route: 'GET /api/company', status: 'Passed' });
@@ -101,6 +105,8 @@ describe('CompanyController', () => {
     const company: ICompany = {
       name: 'Updated Company',
       cnpj: '12345678901234',
+      email: 'empresa@email.com',
+      password: '1234',
       area: 'Updated Area',
       address: {
         cep: '12345678',
@@ -118,7 +124,7 @@ describe('CompanyController', () => {
 
     mockService.alterCompany.mockResolvedValue(message);
 
-    const result = await controller.alterUserType('1', company);
+    const result = await controller.alterCompany('1', company);
 
     expect(result).toEqual(message);
     results.push({
@@ -132,7 +138,7 @@ describe('CompanyController', () => {
 
     mockService.deleteCompany.mockResolvedValue(message);
 
-    const result = await controller.deleteUserType('1');
+    const result = await controller.deleteCompany('1');
 
     expect(result).toEqual(message);
     results.push({

@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { UserTypeService } from '../../service/UserType.service';
-import { UserTypeRepository } from '../../repository/UsertType.repository';
+import { UserTypeController } from '../../controller/UserType.controller';
 import {
   IUserType,
   IUserTypeWithStatusCode,
 } from '../../interface/UserType.interface';
 import { IMessage } from '../../interface/Message.interface';
 
-describe('UserTypeService', () => {
+describe('UserTypeController', () => {
+  let controller: UserTypeController;
   let service: UserTypeService;
-  let repository: UserTypeRepository;
   const results: TestResult[] = [];
 
-  const mockRepository = {
+  const mockService = {
     createUserType: jest.fn(),
     getAllUserType: jest.fn(),
     alterUserType: jest.fn(),
@@ -22,17 +22,17 @@ describe('UserTypeService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [UserTypeController],
       providers: [
-        UserTypeService,
         {
-          provide: UserTypeRepository,
-          useValue: mockRepository,
+          provide: UserTypeService,
+          useValue: mockService,
         },
       ],
     }).compile();
 
+    controller = module.get<UserTypeController>(UserTypeController);
     service = module.get<UserTypeService>(UserTypeService);
-    repository = module.get<UserTypeRepository>(UserTypeRepository);
   });
 
   afterAll(() => {
@@ -43,12 +43,12 @@ describe('UserTypeService', () => {
     const userType: IUserType = { code: 1, description: 'Admin' };
     const message: IMessage = { status: 201, message: 'Success' };
 
-    mockRepository.createUserType.mockResolvedValue(message);
+    mockService.createUserType.mockResolvedValue(message);
 
-    const result = await service.createUserType(userType);
+    const result = await controller.createUserType(userType);
 
     expect(result).toEqual(message);
-    results.push({ route: 'Service: createUserType', status: 'Passed' });
+    results.push({ route: 'POST /api/usertype', status: 'Passed' });
   });
 
   it('should get all user types', async () => {
@@ -57,34 +57,40 @@ describe('UserTypeService', () => {
       UserType: [{ code: 1, description: 'Admin' }],
     };
 
-    mockRepository.getAllUserType.mockResolvedValue(response);
+    mockService.getAllUserType.mockResolvedValue(response);
 
-    const result = await service.getAllUserType();
+    const result = await controller.getAllUserType();
 
     expect(result).toEqual(response);
-    results.push({ route: 'Service: getAllUserType', status: 'Passed' });
+    results.push({ route: 'GET /api/usertype', status: 'Passed' });
   });
 
   it('should alter user type', async () => {
     const userType: IUserType = { code: 1, description: 'Guest' };
     const message: IMessage = { status: 201, message: 'Updated' };
 
-    mockRepository.alterUserType.mockResolvedValue(message);
+    mockService.alterUserType.mockResolvedValue(message);
 
-    const result = await service.alterUserType(1, userType);
+    const result = await controller.alterUserType(1, userType);
 
     expect(result).toEqual(message);
-    results.push({ route: 'Service: alterUserType', status: 'Passed' });
+    results.push({
+      route: 'PUT /api/usertype/code/:code',
+      status: 'Passed',
+    });
   });
 
   it('should delete user type', async () => {
     const message: IMessage = { status: 201, message: 'Deleted' };
 
-    mockRepository.deleteUserType.mockResolvedValue(message);
+    mockService.deleteUserType.mockResolvedValue(message);
 
-    const result = await service.deleteUserType(1);
+    const result = await controller.deleteUserType(1);
 
     expect(result).toEqual(message);
-    results.push({ route: 'Service: deleteUserType', status: 'Passed' });
+    results.push({
+      route: 'DELETE /api/usertype/code/:code',
+      status: 'Passed',
+    });
   });
 });

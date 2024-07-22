@@ -6,29 +6,57 @@ import {
   ICompanyWithStatusCode,
 } from '../interface/Company.interface';
 import { CompanyDto } from '../dto/Company.dto';
-import { errorMessage } from '../utils/error';
+import { errorMessage } from '../utils/Error.utils';
 import { IImage } from '../interface/Image.interface';
 import axios from 'axios';
+import { RandomCode } from '../utils/RandomCode.utils';
+import { Cryptography } from '../utils/Cryptography.utils';
+import { Email } from '../utils/Email.utils';
 
 @Injectable()
 export class CompanyService {
-  constructor(private readonly repository: CompanyRepository) {}
+  constructor(
+    private readonly repository: CompanyRepository,
+    private readonly codeGenerator: RandomCode,
+    private readonly cryptography: Cryptography,
+    private readonly email: Email,
+  ) {}
 
   createCompany(body: ICompany): Promise<IMessage> {
     return new Promise((resolve, reject) => {
       try {
-        CompanyDto.parse(body);
-
-        this.repository
-          .createCompany(body)
-          .then((result) => {
-            resolve(result);
+        const codeGenerated = this.codeGenerator.generateRandomPassword();
+        this.cryptography
+          .hashPassword(codeGenerated)
+          .then((res) => {
+            body['password'] = res;
+            CompanyDto.parse(body);
+            this.repository
+              .createCompany(body)
+              .then((result) => {
+                if (result.status === 201) {
+                  this.email
+                    .sendEmailWithCode(
+                      body['email'],
+                      'Defina Sua Primeira Senha!',
+                      body['name'],
+                      codeGenerated,
+                    )
+                    .then(() => {
+                      resolve(result);
+                    });
+                }
+                resolve(result);
+              })
+              .catch((error) => {
+                reject({
+                  status: 500,
+                  message: error.message,
+                });
+              });
           })
-          .catch((error) => {
-            reject({
-              status: 500,
-              message: error.message,
-            });
+          .catch((hashError) => {
+            console.error('Error hashing password:', hashError);
           });
       } catch (error) {
         resolve({
@@ -70,6 +98,56 @@ export class CompanyService {
               message: errorMessage(JSON.parse(error.message)),
             });
           });
+      } catch (error) {
+        resolve({
+          status: 400,
+          message: errorMessage(JSON.parse(error.message)),
+        });
+      }
+    });
+  }
+
+  alterPassword(_id: string, password: string): Promise<IMessage> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.cryptography.hashPassword(password).then((res) => {
+          this.repository
+            .alterPassword(_id, res)
+            .then((result) => {
+              resolve(result);
+            })
+            .catch((error) => {
+              reject({
+                status: 500,
+                message: errorMessage(JSON.parse(error.message)),
+              });
+            });
+        });
+      } catch (error) {
+        resolve({
+          status: 400,
+          message: errorMessage(JSON.parse(error.message)),
+        });
+      }
+    });
+  }
+
+  validateCode(_id: string, password: string): Promise<boolean | IMessage> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.repository.getHashPassword(_id).then((res: string) => {
+          this.cryptography
+            .comparePassword(password, res)
+            .then((result: boolean) => {
+              resolve(result);
+            })
+            .catch((error) => {
+              reject({
+                status: 500,
+                message: errorMessage(JSON.parse(error.message)),
+              });
+            });
+        });
       } catch (error) {
         resolve({
           status: 400,

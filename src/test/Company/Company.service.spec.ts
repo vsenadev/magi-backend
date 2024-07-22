@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 import { CompanyService } from '../../service/Company.service';
 import { CompanyRepository } from '../../repository/Company.repository';
 import {
@@ -7,10 +7,19 @@ import {
   ICompanyWithStatusCode,
 } from '../../interface/Company.interface';
 import { IMessage } from '../../interface/Message.interface';
+import { RandomCode } from '../../utils/RandomCode.utils';
+import { Cryptography } from '../../utils/Cryptography.utils';
+import { Email } from '../../utils/Email.utils';
+import axios from 'axios';
+
+jest.mock('axios');
 
 describe('CompanyService', () => {
   let service: CompanyService;
   let repository: CompanyRepository;
+  let codeGenerator: RandomCode;
+  let cryptography: Cryptography;
+  let email: Email;
   const results: TestResult[] = [];
 
   const mockRepository = {
@@ -18,12 +27,16 @@ describe('CompanyService', () => {
     getAllCompanies: jest.fn(),
     alterCompany: jest.fn(),
     deleteCompany: jest.fn(),
+    uploadImage: jest.fn(),
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CompanyService,
+        RandomCode,
+        Cryptography,
+        Email,
         {
           provide: CompanyRepository,
           useValue: mockRepository,
@@ -33,6 +46,9 @@ describe('CompanyService', () => {
 
     service = module.get<CompanyService>(CompanyService);
     repository = module.get<CompanyRepository>(CompanyRepository);
+    codeGenerator = module.get<RandomCode>(RandomCode);
+    cryptography = module.get<Cryptography>(Cryptography);
+    email = module.get<Email>(Email);
   });
 
   afterAll(() => {
@@ -44,6 +60,8 @@ describe('CompanyService', () => {
       name: 'Example Company',
       cnpj: '123456789012345678',
       area: 'Example Area',
+      email: 'empresa@email.com',
+      password: '123456789',
       address: {
         cep: '123456789',
         road: 'Example Road',
@@ -57,6 +75,14 @@ describe('CompanyService', () => {
       status: 1,
     };
     const message: IMessage = { status: 201, message: 'Success' };
+
+    jest
+      .spyOn(codeGenerator, 'generateRandomPassword')
+      .mockReturnValue('randomPassword');
+    jest
+      .spyOn(cryptography, 'hashPassword')
+      .mockResolvedValue('hashedPassword');
+    jest.spyOn(email, 'sendEmailWithCode').mockResolvedValue(undefined);
 
     mockRepository.createCompany.mockResolvedValue(message);
 
@@ -74,6 +100,8 @@ describe('CompanyService', () => {
           name: 'Example Company',
           cnpj: '12345678901234',
           area: 'Example Area',
+          email: 'empresa@email.com',
+          password: '123456789',
           address: {
             cep: '12345678',
             road: 'Example Road',
@@ -101,6 +129,8 @@ describe('CompanyService', () => {
     const company: ICompany = {
       name: 'Updated Company',
       cnpj: '123456789012345678',
+      email: 'empresa@email.com',
+      password: '123456789',
       area: 'Updated Area',
       address: {
         cep: '123456789',
@@ -133,5 +163,29 @@ describe('CompanyService', () => {
 
     expect(result).toEqual(message);
     results.push({ route: 'Service: deleteCompany', status: 'Passed' });
+  });
+
+  it('should upload an image', async () => {
+    const image = {
+      buffer: Buffer.from('image data'),
+    };
+    const message: IMessage = { status: 200, message: 'Image uploaded' };
+    const axiosResponse = {
+      data: {
+        data: {
+          image: {
+            url: 'http://example.com/image.jpg',
+          },
+        },
+      },
+    };
+
+    (axios.post as jest.Mock).mockResolvedValue(axiosResponse);
+    mockRepository.uploadImage.mockResolvedValue(message);
+
+    const result = await service.uploadImage('1', image as any);
+
+    expect(result).toEqual(message);
+    results.push({ route: 'Service: uploadImage', status: 'Passed' });
   });
 });

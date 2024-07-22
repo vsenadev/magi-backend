@@ -6,7 +6,7 @@ import {
   ILockStatusWithStatusCode,
 } from '../../interface/LockStatus.interface';
 import { IMessage } from '../../interface/Message.interface';
-import { TestResult, printResults } from '../../utils/test-utils';
+import { TestResult, printResults } from '../../utils/Test.utils';
 
 describe('LockStatusService', () => {
   let service: LockStatusService;

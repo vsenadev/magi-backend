@@ -5,6 +5,8 @@ export const CompanySchema = new Schema<Company>({
   picture: { type: String, required: false },
   name: { type: String, required: true },
   cnpj: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
   area: { type: String, required: true },
   address: { type: Object, required: true },
   senders: [{ type: Object, required: true }],

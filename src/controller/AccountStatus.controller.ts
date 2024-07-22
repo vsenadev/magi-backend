@@ -12,6 +12,7 @@ import { IMessage } from '../interface/Message.interface';
 import {
   IAccountStatus,
   IAccountStatusWithStatusCode,
+  IDescription,
 } from '../interface/AccountStatus.interface';
 
 @Controller('api/accountstatus')
@@ -31,9 +32,9 @@ export class AccountStatusController {
   @Put('/code/:code')
   alterAccountStatus(
     @Param('code') code: number,
-    @Body() body: IAccountStatus,
+    @Body() body: IDescription,
   ): Promise<IMessage> {
-    return this.service.alterAccountStatus(code, body);
+    return this.service.alterAccountStatus(code, body.description);
   }
 
   @Delete('/code/:code')

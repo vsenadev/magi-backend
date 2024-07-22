@@ -4,6 +4,8 @@ export interface ICompany {
   picture?: string;
   cnpj: string;
   area: string;
+  email: string;
+  password: string;
   address: IAddress;
   senders: ISender[];
   type: number;
@@ -26,4 +28,8 @@ export interface ISender {
 export interface ICompanyWithStatusCode {
   status: number;
   companies: ICompany[];
+}
+
+export interface IPassword {
+  password: string;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IMessage } from '../interface/Message.interface';
@@ -29,7 +29,9 @@ export class CompanyRepository {
           return this.companyModel
             .create({
               name: body.name.toUpperCase(),
-              picture: '',
+              email: body.email,
+              password: body.password,
+              picture: body.picture,
               cnpj: body.cnpj,
               area: body.area,
               address: body.address,
@@ -58,6 +60,45 @@ export class CompanyRepository {
           status: 200,
           companies: companies,
         };
+      });
+  }
+
+  alterPassword(_id: string, password: string): Promise<IMessage> {
+    return this.companyModel
+      .updateOne({ _id: _id }, { password: password })
+      .then((): IMessage => {
+        return {
+          status: 201,
+          message: 'Senha atualizada com sucesso!',
+        };
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  getHashPassword(_id: string): Promise<string> {
+    return this.companyModel
+      .findOne(
+        { _id: _id },
+        {
+          _id: 0,
+          name: 0,
+          email: 0,
+          picture: 0,
+          cnpj: 0,
+          area: 0,
+          address: 0,
+          senders: 0,
+          type: 0,
+          status: 0,
+        },
+      )
+      .then((res): string => {
+        return res.password;
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   }
 
@@ -123,6 +164,16 @@ export class CompanyRepository {
       .catch((error) => {
         throw new Error(error);
       });
+  }
+
+  insertEmployee(
+    company_id: string | unknown,
+    _id: string | unknown,
+  ): Promise<void | unknown> {
+    return this.companyModel.updateOne(
+      { _id: company_id },
+      { $push: { senders: _id } },
+    );
   }
 
   deleteCompany(_id: string): Promise<IMessage> {
